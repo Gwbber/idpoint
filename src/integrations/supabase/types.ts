@@ -14,16 +14,303 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      app_settings: {
+        Row: {
+          key: string
+          updated_at: string
+          value: Json
+        }
+        Insert: {
+          key: string
+          updated_at?: string
+          value?: Json
+        }
+        Update: {
+          key?: string
+          updated_at?: string
+          value?: Json
+        }
+        Relationships: []
+      }
+      audit_logs: {
+        Row: {
+          action: string
+          actor_id: string | null
+          actor_name: string | null
+          created_at: string
+          details: Json
+          entity: string
+          entity_id: string | null
+          id: string
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          actor_name?: string | null
+          created_at?: string
+          details?: Json
+          entity: string
+          entity_id?: string | null
+          id?: string
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          actor_name?: string | null
+          created_at?: string
+          details?: Json
+          entity?: string
+          entity_id?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
+      holidays: {
+        Row: {
+          created_at: string
+          description: string
+          holiday_date: string
+          holiday_type: string
+          id: string
+          overtime_percent: number
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          holiday_date: string
+          holiday_type?: string
+          id?: string
+          overtime_percent?: number
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          holiday_date?: string
+          holiday_type?: string
+          id?: string
+          overtime_percent?: number
+        }
+        Relationships: []
+      }
+      monthly_closings: {
+        Row: {
+          closed_at: string
+          closed_by: string | null
+          id: string
+          month: number
+          notes: string | null
+          year: number
+        }
+        Insert: {
+          closed_at?: string
+          closed_by?: string | null
+          id?: string
+          month: number
+          notes?: string | null
+          year: number
+        }
+        Update: {
+          closed_at?: string
+          closed_by?: string | null
+          id?: string
+          month?: number
+          notes?: string | null
+          year?: number
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          active: boolean
+          created_at: string
+          department: string | null
+          email: string
+          employee_code: string | null
+          full_name: string
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          department?: string | null
+          email?: string
+          employee_code?: string | null
+          full_name?: string
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          department?: string | null
+          email?: string
+          employee_code?: string | null
+          full_name?: string
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      time_adjustments: {
+        Row: {
+          admin_id: string
+          created_at: string
+          employee_id: string
+          field_name: string
+          id: string
+          new_value: string | null
+          old_value: string | null
+          reason: string
+          time_record_id: string | null
+          work_date: string
+        }
+        Insert: {
+          admin_id: string
+          created_at?: string
+          employee_id: string
+          field_name: string
+          id?: string
+          new_value?: string | null
+          old_value?: string | null
+          reason: string
+          time_record_id?: string | null
+          work_date: string
+        }
+        Update: {
+          admin_id?: string
+          created_at?: string
+          employee_id?: string
+          field_name?: string
+          id?: string
+          new_value?: string | null
+          old_value?: string | null
+          reason?: string
+          time_record_id?: string | null
+          work_date?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "time_adjustments_time_record_id_fkey"
+            columns: ["time_record_id"]
+            isOneToOne: false
+            referencedRelation: "time_records"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      time_records: {
+        Row: {
+          clock_in: string | null
+          clock_out: string | null
+          created_at: string
+          id: string
+          lunch_end: string | null
+          lunch_start: string | null
+          notes: string | null
+          updated_at: string
+          user_id: string
+          work_date: string
+        }
+        Insert: {
+          clock_in?: string | null
+          clock_out?: string | null
+          created_at?: string
+          id?: string
+          lunch_end?: string | null
+          lunch_start?: string | null
+          notes?: string | null
+          updated_at?: string
+          user_id: string
+          work_date: string
+        }
+        Update: {
+          clock_in?: string | null
+          clock_out?: string | null
+          created_at?: string
+          id?: string
+          lunch_end?: string | null
+          lunch_start?: string | null
+          notes?: string | null
+          updated_at?: string
+          user_id?: string
+          work_date?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      work_schedules: {
+        Row: {
+          created_at: string
+          id: string
+          is_working: boolean
+          lunch_end: string | null
+          lunch_start: string | null
+          updated_at: string
+          user_id: string
+          weekday: number
+          work_end: string | null
+          work_start: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_working?: boolean
+          lunch_end?: string | null
+          lunch_start?: string | null
+          updated_at?: string
+          user_id: string
+          weekday: number
+          work_end?: string | null
+          work_start?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_working?: boolean
+          lunch_end?: string | null
+          lunch_start?: string | null
+          updated_at?: string
+          user_id?: string
+          weekday?: number
+          work_end?: string | null
+          work_start?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_admin: { Args: never; Returns: boolean }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "employee"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +437,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "employee"],
+    },
   },
 } as const

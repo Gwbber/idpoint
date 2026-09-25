@@ -1,24 +1,44 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { Clock } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
+  ssr: false,
   component: Index,
+  head: () => ({
+    meta: [
+      { title: "Ponto Certo — Controle de ponto eletrônico" },
+      {
+        name: "description",
+        content:
+          "Registre entrada, intervalo e saída, acompanhe horas extras e banco de horas em um só lugar.",
+      },
+      { property: "og:title", content: "Ponto Certo — Controle de ponto eletrônico" },
+      {
+        property: "og:description",
+        content:
+          "Registre entrada, intervalo e saída, acompanhe horas extras e banco de horas em um só lugar.",
+      },
+    ],
+  }),
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
+  const { session, loading } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (loading) return;
+    navigate({ to: session ? "/ponto" : "/auth", replace: true });
+  }, [session, loading, navigate]);
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="surface-gradient flex min-h-screen items-center justify-center bg-background">
+      <div className="flex items-center gap-3 text-muted-foreground">
+        <Clock className="h-5 w-5 animate-spin text-primary" />
+        Carregando…
+      </div>
     </div>
   );
 }

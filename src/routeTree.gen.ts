@@ -17,6 +17,7 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as AuthenticatedFuncionariosRouteImport } from './routes/_authenticated/funcionarios'
 import { Route as AuthenticatedMeusRegistrosRouteImport } from './routes/_authenticated/meus-registros'
 import { Route as AuthenticatedPontoRouteImport } from './routes/_authenticated/ponto'
+import { Route as AuthenticatedRegistrosRouteImport } from './routes/_authenticated/registros'
 import { Route as AuthenticatedRelatoriosRouteImport } from './routes/_authenticated/relatorios'
 
 const IndexRoute = IndexRouteImport.update({
@@ -61,6 +62,11 @@ const AuthenticatedPontoRoute = AuthenticatedPontoRouteImport.update({
   path: '/ponto',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedRegistrosRoute = AuthenticatedRegistrosRouteImport.update({
+  id: '/registros',
+  path: '/registros',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedRelatoriosRoute = AuthenticatedRelatoriosRouteImport.update({
   id: '/relatorios',
   path: '/relatorios',
@@ -75,6 +81,7 @@ export interface FileRoutesByFullPath {
   '/funcionarios': typeof AuthenticatedFuncionariosRoute
   '/meus-registros': typeof AuthenticatedMeusRegistrosRoute
   '/ponto': typeof AuthenticatedPontoRoute
+  '/registros': typeof AuthenticatedRegistrosRoute
   '/relatorios': typeof AuthenticatedRelatoriosRoute
 }
 export interface FileRoutesByTo {
@@ -85,6 +92,7 @@ export interface FileRoutesByTo {
   '/funcionarios': typeof AuthenticatedFuncionariosRoute
   '/meus-registros': typeof AuthenticatedMeusRegistrosRoute
   '/ponto': typeof AuthenticatedPontoRoute
+  '/registros': typeof AuthenticatedRegistrosRoute
   '/relatorios': typeof AuthenticatedRelatoriosRoute
 }
 export interface FileRoutesById {
@@ -97,6 +105,7 @@ export interface FileRoutesById {
   '/_authenticated/funcionarios': typeof AuthenticatedFuncionariosRoute
   '/_authenticated/meus-registros': typeof AuthenticatedMeusRegistrosRoute
   '/_authenticated/ponto': typeof AuthenticatedPontoRoute
+  '/_authenticated/registros': typeof AuthenticatedRegistrosRoute
   '/_authenticated/relatorios': typeof AuthenticatedRelatoriosRoute
 }
 export interface FileRouteTypes {
@@ -109,6 +118,7 @@ export interface FileRouteTypes {
     | '/funcionarios'
     | '/meus-registros'
     | '/ponto'
+    | '/registros'
     | '/relatorios'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -119,6 +129,7 @@ export interface FileRouteTypes {
     | '/funcionarios'
     | '/meus-registros'
     | '/ponto'
+    | '/registros'
     | '/relatorios'
   id:
     | '__root__'
@@ -130,6 +141,7 @@ export interface FileRouteTypes {
     | '/_authenticated/funcionarios'
     | '/_authenticated/meus-registros'
     | '/_authenticated/ponto'
+    | '/_authenticated/registros'
     | '/_authenticated/relatorios'
   fileRoutesById: FileRoutesById
 }
@@ -197,6 +209,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPontoRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/registros': {
+      id: '/_authenticated/registros'
+      path: '/registros'
+      fullPath: '/registros'
+      preLoaderRoute: typeof AuthenticatedRegistrosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/relatorios': {
       id: '/_authenticated/relatorios'
       path: '/relatorios'
@@ -213,6 +232,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedFuncionariosRoute: typeof AuthenticatedFuncionariosRoute
   AuthenticatedMeusRegistrosRoute: typeof AuthenticatedMeusRegistrosRoute
   AuthenticatedPontoRoute: typeof AuthenticatedPontoRoute
+  AuthenticatedRegistrosRoute: typeof AuthenticatedRegistrosRoute
   AuthenticatedRelatoriosRoute: typeof AuthenticatedRelatoriosRoute
 }
 
@@ -222,6 +242,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedFuncionariosRoute: AuthenticatedFuncionariosRoute,
   AuthenticatedMeusRegistrosRoute: AuthenticatedMeusRegistrosRoute,
   AuthenticatedPontoRoute: AuthenticatedPontoRoute,
+  AuthenticatedRegistrosRoute: AuthenticatedRegistrosRoute,
   AuthenticatedRelatoriosRoute: AuthenticatedRelatoriosRoute,
 }
 

@@ -42,7 +42,7 @@ function Relatorios() {
   });
 
   async function download() {
-    if (blocks.length === 0) return toast.error("Nenhum funcionário selecionado.");
+    if (blocks.length === 0) { toast.error("Nenhum funcionário selecionado."); return; }
     generateMonthlyReport({ companyName: settings.data?.name ?? "Minha Empresa", year: ym.year, month: ym.month, blocks });
     if (user) {
       await logAudit({

@@ -98,7 +98,7 @@ function Funcionarios() {
 
   async function save() {
     if (!form) return;
-    if (form.full_name.trim().length < 2) return toast.error("Informe o nome completo.");
+    if (form.full_name.trim().length < 2) { toast.error("Informe o nome completo."); return; }
     setSaving(true);
     try {
       if (!form.id) {
@@ -154,7 +154,7 @@ function Funcionarios() {
 
   async function confirmReset() {
     if (!resetting) return;
-    if (newPass.length < 6) return toast.error("A senha deve ter ao menos 6 caracteres.");
+    if (newPass.length < 6) { toast.error("A senha deve ter ao menos 6 caracteres."); return; }
     try {
       await resetFn({ data: { user_id: resetting.id, password: newPass } });
       await audit("password_reset", resetting.id, { name: resetting.full_name });

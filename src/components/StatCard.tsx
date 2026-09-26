@@ -11,7 +11,7 @@ export function StatCard({
 }: {
   label: string;
   value: string;
-  hint?: string;
+  hint?: string | undefined;
   icon: LucideIcon;
   tone?: "default" | "success" | "warning" | "destructive";
 }) {

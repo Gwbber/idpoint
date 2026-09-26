@@ -1,9 +1,9 @@
 import { summarizeDay, type DaySummary, type Holiday, type TimeRecord, type WorkSchedule } from "./attendance";
 import { monthDays, todayISO } from "./time-utils";
 
-export function currentYearMonth() {
+export function currentYearMonth(): { year: number; month: number } {
   const [y, m] = todayISO().split("-").map(Number);
-  return { year: y, month: m };
+  return { year: y ?? new Date().getFullYear(), month: m ?? 1 };
 }
 
 export function buildMonth(

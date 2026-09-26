@@ -41,13 +41,13 @@ function Configuracoes() {
 
   async function save(e: React.FormEvent) {
     e.preventDefault();
-    if (!form.name.trim()) return toast.error("Informe o nome da empresa.");
+    if (!form.name.trim()) { toast.error("Informe o nome da empresa."); return; }
     setSaving(true);
     const { error } = await supabase
       .from("app_settings")
       .upsert({ key: "company", value: { ...form, name: form.name.trim() } });
     setSaving(false);
-    if (error) return toast.error("Não foi possível salvar.");
+    if (error) { toast.error("Não foi possível salvar."); return; }
     if (user)
       await logAudit({ actorId: user.id, actorName: profile?.full_name ?? "", action: "settings_updated", entity: "settings", entityId: "company", details: form });
     qc.invalidateQueries({ queryKey: ["settings"] });

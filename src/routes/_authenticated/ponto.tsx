@@ -77,12 +77,12 @@ function PontoPage() {
       if (!record) {
         const { error } = await supabase
           .from("time_records")
-          .insert({ user_id: user.id, work_date: date, [action]: stamp });
+          .insert({ user_id: user.id, work_date: date, [action]: stamp } as { user_id: string; work_date: string } & Partial<Record<typeof action, string>>);
         if (error) throw error;
       } else {
         const { error } = await supabase
           .from("time_records")
-          .update({ [action]: stamp })
+          .update({ [action]: stamp } as Partial<Record<typeof action, string>>)
           .eq("id", record.id);
         if (error) throw error;
       }

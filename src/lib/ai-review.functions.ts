@@ -26,7 +26,7 @@ export const reviewRecords = createServerFn({ method: "POST" })
     const { data: isAdmin } = await context.supabase.rpc("is_admin");
     if (!isAdmin) throw new Error("Acesso restrito a administradores.");
 
-    const apiKey = process.env.LOVABLE_API_KEY;
+    const apiKey = process.env['LOVABLE_API_KEY'];
     if (!apiKey) throw new Error("Serviço de IA não configurado.");
 
     const { createOpenAI } = await import("@ai-sdk/openai");

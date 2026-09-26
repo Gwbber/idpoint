@@ -53,14 +53,14 @@ function Registros() {
   function toggle(id: string) {
     setSelected((prev) => {
       const n = new Set(prev);
-      n.has(id) ? n.delete(id) : n.add(id);
+      if (n.has(id)) n.delete(id); else n.add(id);
       return n;
     });
   }
 
   async function analyze() {
     const chosen = rows.filter((r) => selected.has(r.id));
-    if (chosen.length === 0) return toast.error("Selecione ao menos um registro.");
+    if (chosen.length === 0) { toast.error("Selecione ao menos um registro."); return; }
     setLoading(true);
     setSummary(null);
     try {

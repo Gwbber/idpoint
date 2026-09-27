@@ -102,6 +102,11 @@ function Funcionarios() {
     setSaving(true);
     try {
       if (!form.id) {
+        const email = form.email.trim();
+        if (/[^\x00-\x7F]/.test(email))
+          throw new Error("O e-mail não pode ter acentos ou cedilha (ex.: use \"expedicao\" em vez de \"expedição\").");
+        if (!/^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/.test(email)) throw new Error("Informe um e-mail válido.");
+        form.email = email;
         if (form.password.length < 6) throw new Error("A senha deve ter ao menos 6 caracteres.");
         const res = await createFn({
           data: {

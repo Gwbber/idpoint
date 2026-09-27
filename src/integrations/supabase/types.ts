@@ -307,6 +307,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_active_employee: { Args: never; Returns: boolean }
       is_admin: { Args: never; Returns: boolean }
     }
     Enums: {

@@ -48,6 +48,10 @@ export function isoToDisplay(iso: string): string {
 
 export function formatDate(value: string | Date | null | undefined): string {
   if (!value) return "--/--/----";
+  if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    const [y, m, d] = value.split("-");
+    return `${d}/${m}/${y}`;
+  }
   return dateFmt.format(typeof value === "string" ? new Date(value) : value);
 }
 

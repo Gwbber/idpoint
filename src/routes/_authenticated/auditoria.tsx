@@ -22,7 +22,7 @@ const ACTIONS: Record<string, string> = {
   employee_created: "Funcionário criado", employee_updated: "Funcionário alterado", employee_deleted: "Funcionário excluído",
   password_reset: "Senha redefinida", holiday_created: "Feriado criado", holiday_deleted: "Feriado excluído",
   month_closed: "Mês fechado", month_reopened: "Mês reaberto", settings_updated: "Configurações alteradas",
-  ai_review: "Revisão com IA", punch: "Marcação de ponto",
+  ai_review: "Revisão com IA", punch: "Marcação de ponto", report_generated: "Relatório gerado",
 };
 
 function Auditoria() {

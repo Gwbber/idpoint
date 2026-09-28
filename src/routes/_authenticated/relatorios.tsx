@@ -43,7 +43,9 @@ function Relatorios() {
 
   async function download() {
     if (blocks.length === 0) { toast.error("Nenhum funcionário selecionado."); return; }
-    generateMonthlyReport({ companyName: settings.data?.name ?? "Minha Empresa", year: ym.year, month: ym.month, blocks });
+    const suffix = who === "all" ? "" : `-${slugify(blocks[0].employee.full_name)}`;
+    const fileName = `espelho-ponto-${ym.year}-${String(ym.month).padStart(2, "0")}${suffix}.pdf`;
+    generateMonthlyReport({ companyName: settings.data?.name ?? "Minha Empresa", year: ym.year, month: ym.month, blocks }).save(fileName);
     if (user) {
       await logAudit({
         actorId: user.id,

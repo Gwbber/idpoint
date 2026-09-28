@@ -16,27 +16,39 @@ export type Database = {
     Tables: {
       app_settings: {
         Row: {
+          company_id: string
           key: string
           updated_at: string
           value: Json
         }
         Insert: {
+          company_id?: string
           key: string
           updated_at?: string
           value?: Json
         }
         Update: {
+          company_id?: string
           key?: string
           updated_at?: string
           value?: Json
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "app_settings_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       audit_logs: {
         Row: {
           action: string
           actor_id: string | null
           actor_name: string | null
+          company_id: string
           created_at: string
           details: Json
           entity: string
@@ -47,6 +59,7 @@ export type Database = {
           action: string
           actor_id?: string | null
           actor_name?: string | null
+          company_id?: string
           created_at?: string
           details?: Json
           entity: string
@@ -57,16 +70,53 @@ export type Database = {
           action?: string
           actor_id?: string | null
           actor_name?: string | null
+          company_id?: string
           created_at?: string
           details?: Json
           entity?: string
           entity_id?: string | null
           id?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: "audit_logs_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      companies: {
+        Row: {
+          active: boolean
+          cnpj: string | null
+          created_at: string
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          cnpj?: string | null
+          created_at?: string
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          cnpj?: string | null
+          created_at?: string
+          id?: string
+          name?: string
+          updated_at?: string
+        }
         Relationships: []
       }
       holidays: {
         Row: {
+          company_id: string
           created_at: string
           description: string
           holiday_date: string
@@ -75,6 +125,7 @@ export type Database = {
           overtime_percent: number
         }
         Insert: {
+          company_id?: string
           created_at?: string
           description: string
           holiday_date: string
@@ -83,6 +134,7 @@ export type Database = {
           overtime_percent?: number
         }
         Update: {
+          company_id?: string
           created_at?: string
           description?: string
           holiday_date?: string
@@ -90,12 +142,21 @@ export type Database = {
           id?: string
           overtime_percent?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "holidays_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       monthly_closings: {
         Row: {
           closed_at: string
           closed_by: string | null
+          company_id: string
           id: string
           month: number
           notes: string | null
@@ -104,6 +165,7 @@ export type Database = {
         Insert: {
           closed_at?: string
           closed_by?: string | null
+          company_id?: string
           id?: string
           month: number
           notes?: string | null
@@ -112,16 +174,26 @@ export type Database = {
         Update: {
           closed_at?: string
           closed_by?: string | null
+          company_id?: string
           id?: string
           month?: number
           notes?: string | null
           year?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "monthly_closings_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
           active: boolean
+          company_id: string
           created_at: string
           department: string | null
           email: string
@@ -132,6 +204,7 @@ export type Database = {
         }
         Insert: {
           active?: boolean
+          company_id?: string
           created_at?: string
           department?: string | null
           email?: string
@@ -142,6 +215,7 @@ export type Database = {
         }
         Update: {
           active?: boolean
+          company_id?: string
           created_at?: string
           department?: string | null
           email?: string
@@ -150,11 +224,20 @@ export type Database = {
           id?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       time_adjustments: {
         Row: {
           admin_id: string
+          company_id: string
           created_at: string
           employee_id: string
           field_name: string
@@ -167,6 +250,7 @@ export type Database = {
         }
         Insert: {
           admin_id: string
+          company_id?: string
           created_at?: string
           employee_id: string
           field_name: string
@@ -179,6 +263,7 @@ export type Database = {
         }
         Update: {
           admin_id?: string
+          company_id?: string
           created_at?: string
           employee_id?: string
           field_name?: string
@@ -190,6 +275,13 @@ export type Database = {
           work_date?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "time_adjustments_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "time_adjustments_time_record_id_fkey"
             columns: ["time_record_id"]
@@ -203,6 +295,7 @@ export type Database = {
         Row: {
           clock_in: string | null
           clock_out: string | null
+          company_id: string
           created_at: string
           id: string
           lunch_end: string | null
@@ -215,6 +308,7 @@ export type Database = {
         Insert: {
           clock_in?: string | null
           clock_out?: string | null
+          company_id?: string
           created_at?: string
           id?: string
           lunch_end?: string | null
@@ -227,6 +321,7 @@ export type Database = {
         Update: {
           clock_in?: string | null
           clock_out?: string | null
+          company_id?: string
           created_at?: string
           id?: string
           lunch_end?: string | null
@@ -236,7 +331,15 @@ export type Database = {
           user_id?: string
           work_date?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "time_records_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
@@ -258,6 +361,7 @@ export type Database = {
       }
       work_schedules: {
         Row: {
+          company_id: string
           created_at: string
           id: string
           is_working: boolean
@@ -270,6 +374,7 @@ export type Database = {
           work_start: string | null
         }
         Insert: {
+          company_id?: string
           created_at?: string
           id?: string
           is_working?: boolean
@@ -282,6 +387,7 @@ export type Database = {
           work_start?: string | null
         }
         Update: {
+          company_id?: string
           created_at?: string
           id?: string
           is_working?: boolean
@@ -293,13 +399,22 @@ export type Database = {
           work_end?: string | null
           work_start?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "work_schedules_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      current_company_id: { Args: never; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

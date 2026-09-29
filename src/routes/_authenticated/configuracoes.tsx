@@ -23,21 +23,23 @@ export const Route = createFileRoute("/_authenticated/configuracoes")({
 });
 
 function Configuracoes() {
-  const { user, profile } = useAuth();
+  const { user, profile, company } = useAuth();
   const qc = useQueryClient();
   const { data } = useSettings();
-  const [form, setForm] = useState({ name: "", overtime_50: 50, overtime_100: 100, tolerance_minutes: 10 });
+  const [form, setForm] = useState({ name: "", cnpj: "", overtime_50: 50, overtime_100: 100, tolerance_minutes: 10 });
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    if (data)
-      setForm({
-        name: data.name ?? "Minha Empresa",
-        overtime_50: data.overtime_50 ?? 50,
-        overtime_100: data.overtime_100 ?? 100,
-        tolerance_minutes: data.tolerance_minutes ?? 10,
-      });
-  }, [data]);
+    if (data || company)
+      setForm((f) => ({
+        ...f,
+        name: company?.name ?? data?.name ?? "Minha Empresa",
+        cnpj: company?.cnpj ?? "",
+        overtime_50: data?.overtime_50 ?? 50,
+        overtime_100: data?.overtime_100 ?? 100,
+        tolerance_minutes: data?.tolerance_minutes ?? 10,
+      }));
+  }, [data, company]);
 
   async function save(e: React.FormEvent) {
     e.preventDefault();
@@ -45,12 +47,26 @@ function Configuracoes() {
     setSaving(true);
     const { error } = await supabase
       .from("app_settings")
-      .upsert({ key: "company", value: { ...form, name: form.name.trim() } });
+      .upsert(
+        {
+          key: "company",
+          company_id: company?.id as string,
+          value: { ...form, name: form.name.trim() },
+        },
+        { onConflict: "company_id,key" },
+      );
+    if (!error && company) {
+      await supabase
+        .from("companies")
+        .update({ name: form.name.trim(), cnpj: form.cnpj.trim() || null })
+        .eq("id", company.id);
+    }
     setSaving(false);
     if (error) { toast.error("Não foi possível salvar."); return; }
     if (user)
       await logAudit({ actorId: user.id, actorName: profile?.full_name ?? "", action: "settings_updated", entity: "settings", entityId: "company", details: form });
     qc.invalidateQueries({ queryKey: ["settings"] });
+    qc.invalidateQueries({ queryKey: ["me"] });
     toast.success("Configurações salvas.");
   }
 
@@ -66,7 +82,11 @@ function Configuracoes() {
             <div className="space-y-2">
               <Label htmlFor="name">Nome da empresa</Label>
               <Input id="name" maxLength={120} value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} />
-              <p className="text-xs text-muted-foreground">Aparece no cabeçalho dos relatórios em PDF.</p>
+              <p className="text-xs text-muted-foreground">Aparece no menu e no cabeçalho dos relatórios em PDF.</p>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="cnpj">CNPJ (opcional)</Label>
+              <Input id="cnpj" maxLength={20} placeholder="00.000.000/0001-00" value={form.cnpj} onChange={(e) => setForm((f) => ({ ...f, cnpj: e.target.value }))} />
             </div>
             <div className="grid gap-4 sm:grid-cols-3">
               <div className="space-y-2">

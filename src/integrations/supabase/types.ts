@@ -87,29 +87,94 @@ export type Database = {
           },
         ]
       }
+      cakto_events: {
+        Row: {
+          company_id: string | null
+          created_at: string
+          event_id: string
+          event_type: string
+          id: string
+          payload: Json
+          processed_at: string
+        }
+        Insert: {
+          company_id?: string | null
+          created_at?: string
+          event_id: string
+          event_type: string
+          id?: string
+          payload?: Json
+          processed_at?: string
+        }
+        Update: {
+          company_id?: string | null
+          created_at?: string
+          event_id?: string
+          event_type?: string
+          id?: string
+          payload?: Json
+          processed_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cakto_events_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       companies: {
         Row: {
           active: boolean
+          billing_email: string | null
+          cakto_customer_id: string | null
+          cakto_offer_id: string | null
+          cakto_subscription_id: string | null
           cnpj: string | null
           created_at: string
+          current_period_end: string | null
+          custom_features: Json
           id: string
+          max_employees: number
           name: string
+          plan: string
+          subscription_status: string
           updated_at: string
         }
         Insert: {
           active?: boolean
+          billing_email?: string | null
+          cakto_customer_id?: string | null
+          cakto_offer_id?: string | null
+          cakto_subscription_id?: string | null
           cnpj?: string | null
           created_at?: string
+          current_period_end?: string | null
+          custom_features?: Json
           id?: string
+          max_employees?: number
           name: string
+          plan?: string
+          subscription_status?: string
           updated_at?: string
         }
         Update: {
           active?: boolean
+          billing_email?: string | null
+          cakto_customer_id?: string | null
+          cakto_offer_id?: string | null
+          cakto_subscription_id?: string | null
           cnpj?: string | null
           created_at?: string
+          current_period_end?: string | null
+          custom_features?: Json
           id?: string
+          max_employees?: number
           name?: string
+          plan?: string
+          subscription_status?: string
           updated_at?: string
         }
         Relationships: []
@@ -414,6 +479,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      company_is_active: { Args: { _company_id: string }; Returns: boolean }
       current_company_id: { Args: never; Returns: string }
       has_role: {
         Args: {

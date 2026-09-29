@@ -95,7 +95,7 @@ function NavLinks({ isAdmin, onNavigate }: { isAdmin: boolean; onNavigate?: () =
 }
 
 export function AppLayout({ children }: { children: ReactNode }) {
-  const { profile, isAdmin, signOut, session } = useAuth();
+  const { profile, company, isAdmin, signOut, session } = useAuth();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [warning, setWarning] = useState(false);
@@ -139,6 +139,24 @@ export function AppLayout({ children }: { children: ReactNode }) {
     .map((p) => p[0])
     .join("")
     .toUpperCase();
+
+  if (company && !company.active) {
+    return (
+      <div className="surface-gradient flex min-h-screen items-center justify-center bg-background px-4 text-center">
+        <div className="max-w-md space-y-4">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-glow">
+            <Lock className="h-7 w-7" />
+          </div>
+          <h1 className="text-xl font-extrabold">Acesso suspenso</h1>
+          <p className="text-sm text-muted-foreground">
+            A assinatura da {company.name} está inativa. Regularize o pagamento para liberar o
+            acesso de toda a equipe. Se já pagou, aguarde alguns minutos ou fale com o suporte.
+          </p>
+          <Button onClick={handleSignOut}>Sair</Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">

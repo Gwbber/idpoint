@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Loader2, Timer } from "lucide-react";
 import { z } from "zod";
@@ -51,9 +51,16 @@ function AuthPage() {
     }
     setLoading(true);
     const { error } = await supabase.auth.signInWithPassword(parsed.data);
-    setLoading(false);
     if (error) {
+      setLoading(false);
       toast.error("E-mail ou senha incorretos.");
+      return;
+    }
+    const { data: company } = await supabase.from("companies").select("active").maybeSingle();
+    setLoading(false);
+    if (company && !company.active) {
+      await supabase.auth.signOut();
+      toast.error("Acesso suspenso: assinatura inativa. Regularize o pagamento para voltar a usar.");
       return;
     }
     toast.success("Bem-vindo de volta!");
@@ -112,7 +119,10 @@ function AuthPage() {
               </Button>
             </form>
             <p className="mt-4 text-center text-xs text-muted-foreground">
-              Esqueceu a senha? Solicite a redefinição ao administrador.
+              Primeiro acesso ou esqueceu a senha?{" "}
+              <Link to="/primeiro-acesso" className="font-semibold text-primary hover:underline">
+                Defina sua senha
+              </Link>
             </p>
           </CardContent>
         </Card>

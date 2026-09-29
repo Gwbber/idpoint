@@ -49,6 +49,32 @@ export const createEmployee = createServerFn({ method: "POST" })
     await assertAdmin(context.supabase as never, context.userId);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
+    const { data: me } = await supabaseAdmin
+      .from("profiles")
+      .select("company_id")
+      .eq("id", context.userId)
+      .maybeSingle();
+    const companyId = me?.company_id;
+    if (!companyId) throw new Error("Empresa do administrador não encontrada.");
+
+    const { data: company } = await supabaseAdmin
+      .from("companies")
+      .select("active, max_employees")
+      .eq("id", companyId)
+      .maybeSingle();
+    if (!company?.active) {
+      throw new Error("Assinatura inativa. Regularize o pagamento para cadastrar funcionários.");
+    }
+    const { count } = await supabaseAdmin
+      .from("profiles")
+      .select("id", { count: "exact", head: true })
+      .eq("company_id", companyId);
+    if ((count ?? 0) >= (company.max_employees ?? 10)) {
+      throw new Error(
+        `Limite do plano atingido (${company.max_employees} usuários). Faça upgrade para cadastrar mais.`,
+      );
+    }
+
     const { data: created, error } = await supabaseAdmin.auth.admin.createUser({
       email: data.email,
       password: data.password,
@@ -62,13 +88,17 @@ export const createEmployee = createServerFn({ method: "POST" })
 
     const { error: profileError } = await supabaseAdmin.from("profiles").insert({
       id: newId,
+      company_id: companyId,
       full_name: data.full_name,
       email: data.email,
       employee_code: data.employee_code,
       department: data.department,
       active: true,
     });
-    if (profileError) throw new Error(profileError.message);
+    if (profileError) {
+      await supabaseAdmin.auth.admin.deleteUser(newId);
+      throw new Error(profileError.message);
+    }
 
     await supabaseAdmin
       .from("user_roles")
@@ -77,11 +107,12 @@ export const createEmployee = createServerFn({ method: "POST" })
     if (data.schedules.length > 0) {
       await supabaseAdmin
         .from("work_schedules")
-        .insert(data.schedules.map((s) => ({ ...s, user_id: newId })));
+        .insert(data.schedules.map((s) => ({ ...s, user_id: newId, company_id: companyId })));
     }
 
     return { id: newId };
   });
+
 
 export const resetEmployeePassword = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])

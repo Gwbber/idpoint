@@ -3,11 +3,15 @@ import type { Session, User } from "@supabase/supabase-js";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Profile } from "@/lib/attendance";
+import type { Tables } from "@/integrations/supabase/types";
+
+export type Company = Tables<"companies">;
 
 type AuthValue = {
   session: Session | null;
   user: User | null;
   profile: Profile | null;
+  company: Company | null;
   isAdmin: boolean;
   loading: boolean;
   signOut: () => Promise<void>;
@@ -38,12 +42,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     queryKey: ["me", userId],
     enabled: Boolean(userId),
     queryFn: async () => {
-      const [profileRes, rolesRes] = await Promise.all([
+      const [profileRes, rolesRes, companyRes] = await Promise.all([
         supabase.from("profiles").select("*").eq("id", userId!).maybeSingle(),
         supabase.from("user_roles").select("role").eq("user_id", userId!),
+        supabase.from("companies").select("*").maybeSingle(),
       ]);
       return {
         profile: (profileRes.data as Profile | null) ?? null,
+        company: (companyRes.data as Company | null) ?? null,
         isAdmin: (rolesRes.data ?? []).some((r) => r.role === "admin"),
       };
     },
@@ -54,6 +60,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       session,
       user: session?.user ?? null,
       profile: data?.profile ?? null,
+      company: data?.company ?? null,
       isAdmin: data?.isAdmin ?? false,
       loading: !ready || (Boolean(userId) && isLoading),
       signOut: async () => {

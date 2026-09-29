@@ -47,6 +47,7 @@ const NAV: NavItem[] = [
 ];
 
 function Brand() {
+  const { company } = useAuth();
   return (
     <div className="flex items-center gap-2.5 px-5 py-5">
       <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-glow">
@@ -54,7 +55,9 @@ function Brand() {
       </div>
       <div className="leading-tight">
         <p className="text-sm font-extrabold tracking-tight">Ponto Certo</p>
-        <p className="text-[11px] text-muted-foreground">Controle de jornada</p>
+        <p className="max-w-[10rem] truncate text-[11px] text-muted-foreground">
+          {company?.name ?? "Controle de jornada"}
+        </p>
       </div>
     </div>
   );

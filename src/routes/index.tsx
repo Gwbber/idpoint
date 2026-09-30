@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { Clock } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { isRecoveryUrl, recoveryTargetUrl } from "@/lib/recovery";
 
 export const Route = createFileRoute("/")({
   ssr: false,
@@ -29,6 +30,10 @@ function Index() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (isRecoveryUrl()) {
+      window.location.replace(recoveryTargetUrl());
+      return;
+    }
     if (loading) return;
     navigate({ to: session ? "/ponto" : "/auth", replace: true });
   }, [session, loading, navigate]);

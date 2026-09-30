@@ -201,6 +201,7 @@ export async function provisionCompany(input: ProvisionInput): Promise<Provision
   const { data: link } = await supabaseAdmin.auth.admin.generateLink({
     type: "recovery",
     email,
+    options: { redirectTo: `${APP_URL}/redefinir-senha` },
   });
   recoveryLink = link?.properties?.action_link ?? null;
 

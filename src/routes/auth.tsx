@@ -5,6 +5,7 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { isRecoveryUrl, recoveryTargetUrl } from "@/lib/recovery";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -39,6 +40,10 @@ function AuthPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    if (isRecoveryUrl()) {
+      window.location.replace(recoveryTargetUrl());
+      return;
+    }
     if (session) navigate({ to: "/ponto", replace: true });
   }, [session, navigate]);
 

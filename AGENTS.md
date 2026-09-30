@@ -8,3 +8,9 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+## Regras do projeto
+
+- Multi-tenant por linha: toda tabela de dados tem `company_id` (default `current_company_id()`), e as políticas RLS isolam por empresa — garante que um cliente nunca veja dados de outro.
+- Provisionamento de clientes acontece em `src/lib/provisioning.server.ts`, chamado pelo webhook `src/routes/api/public/cakto-webhook.ts` — evita criação manual de contas na venda.
+- Customizações exclusivas de um cliente ficam em `companies.custom_features` (JSONB) — permite ligar recursos sob medida sem afetar as demais empresas.

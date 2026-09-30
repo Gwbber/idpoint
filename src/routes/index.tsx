@@ -29,6 +29,10 @@ function Index() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (isRecoveryUrl()) {
+      window.location.replace(recoveryTargetUrl());
+      return;
+    }
     if (loading) return;
     navigate({ to: session ? "/ponto" : "/auth", replace: true });
   }, [session, loading, navigate]);

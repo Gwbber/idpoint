@@ -1,5 +1,8 @@
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
+/** Endereço público do sistema, usado nos links enviados por e-mail. */
+const APP_URL = "https://idpoint.lovable.app";
+
 export const HOLIDAYS_2026 = [
   { holiday_date: "2026-01-01", description: "Confraternização Universal" },
   { holiday_date: "2026-02-17", description: "Carnaval" },

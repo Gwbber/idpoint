@@ -4,6 +4,8 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Profile } from "@/lib/attendance";
 import type { Tables } from "@/integrations/supabase/types";
+import { recoveryTargetUrl } from "@/lib/recovery";
+
 
 export type Company = Tables<"companies">;
 

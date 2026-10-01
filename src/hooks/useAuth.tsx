@@ -4,6 +4,8 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Profile } from "@/lib/attendance";
 import type { Tables } from "@/integrations/supabase/types";
+import { recoveryTargetUrl } from "@/lib/recovery";
+
 
 export type Company = Tables<"companies">;
 
@@ -28,6 +30,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { data: sub } = supabase.auth.onAuthStateChange((event, next) => {
       setSession(next);
       if (event === "SIGNED_OUT") queryClient.clear();
+      if (
+        event === "PASSWORD_RECOVERY" &&
+        typeof window !== "undefined" &&
+        !window.location.pathname.startsWith("/redefinir-senha")
+      ) {
+        window.location.replace(recoveryTargetUrl());
+      }
     });
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
@@ -35,6 +44,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
     return () => sub.subscription.unsubscribe();
   }, [queryClient]);
+
 
   const userId = session?.user?.id ?? null;
 

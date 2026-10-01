@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as PrimeiroAcessoRouteImport } from './routes/primeiro-acesso'
 import { Route as RedefinirSenhaRouteImport } from './routes/redefinir-senha'
+import { Route as AuthenticatedAssinaturasRouteImport } from './routes/_authenticated/assinaturas'
 import { Route as AuthenticatedAuditoriaRouteImport } from './routes/_authenticated/auditoria'
 import { Route as AuthenticatedConfiguracoesRouteImport } from './routes/_authenticated/configuracoes'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
@@ -50,6 +51,12 @@ const RedefinirSenhaRoute = RedefinirSenhaRouteImport.update({
   path: '/redefinir-senha',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAssinaturasRoute =
+  AuthenticatedAssinaturasRouteImport.update({
+    id: '/assinaturas',
+    path: '/assinaturas',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAuditoriaRoute = AuthenticatedAuditoriaRouteImport.update({
   id: '/auditoria',
   path: '/auditoria',
@@ -114,6 +121,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/primeiro-acesso': typeof PrimeiroAcessoRoute
   '/redefinir-senha': typeof RedefinirSenhaRoute
+  '/assinaturas': typeof AuthenticatedAssinaturasRoute
   '/auditoria': typeof AuthenticatedAuditoriaRoute
   '/configuracoes': typeof AuthenticatedConfiguracoesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -131,6 +139,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/primeiro-acesso': typeof PrimeiroAcessoRoute
   '/redefinir-senha': typeof RedefinirSenhaRoute
+  '/assinaturas': typeof AuthenticatedAssinaturasRoute
   '/auditoria': typeof AuthenticatedAuditoriaRoute
   '/configuracoes': typeof AuthenticatedConfiguracoesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -150,6 +159,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/primeiro-acesso': typeof PrimeiroAcessoRoute
   '/redefinir-senha': typeof RedefinirSenhaRoute
+  '/_authenticated/assinaturas': typeof AuthenticatedAssinaturasRoute
   '/_authenticated/auditoria': typeof AuthenticatedAuditoriaRoute
   '/_authenticated/configuracoes': typeof AuthenticatedConfiguracoesRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
@@ -169,6 +179,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/primeiro-acesso'
     | '/redefinir-senha'
+    | '/assinaturas'
     | '/auditoria'
     | '/configuracoes'
     | '/dashboard'
@@ -186,6 +197,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/primeiro-acesso'
     | '/redefinir-senha'
+    | '/assinaturas'
     | '/auditoria'
     | '/configuracoes'
     | '/dashboard'
@@ -204,6 +216,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/primeiro-acesso'
     | '/redefinir-senha'
+    | '/_authenticated/assinaturas'
     | '/_authenticated/auditoria'
     | '/_authenticated/configuracoes'
     | '/_authenticated/dashboard'
@@ -262,6 +275,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/redefinir-senha'
       preLoaderRoute: typeof RedefinirSenhaRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/assinaturas': {
+      id: '/_authenticated/assinaturas'
+      path: '/assinaturas'
+      fullPath: '/assinaturas'
+      preLoaderRoute: typeof AuthenticatedAssinaturasRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/auditoria': {
       id: '/_authenticated/auditoria'
@@ -344,6 +364,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAssinaturasRoute: typeof AuthenticatedAssinaturasRoute
   AuthenticatedAuditoriaRoute: typeof AuthenticatedAuditoriaRoute
   AuthenticatedConfiguracoesRoute: typeof AuthenticatedConfiguracoesRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
@@ -357,6 +378,7 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAssinaturasRoute: AuthenticatedAssinaturasRoute,
   AuthenticatedAuditoriaRoute: AuthenticatedAuditoriaRoute,
   AuthenticatedConfiguracoesRoute: AuthenticatedConfiguracoesRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,

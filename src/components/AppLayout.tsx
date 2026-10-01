@@ -14,6 +14,10 @@ import {
   Settings,
   Timer,
 } from "lucide-react";
+import { CreditCard } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { isPlatformAdmin } from "@/lib/platform.functions";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -65,7 +69,12 @@ function Brand() {
 
 function NavLinks({ isAdmin, onNavigate }: { isAdmin: boolean; onNavigate?: () => void }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const items = NAV.filter((i) => isAdmin || !i.adminOnly);
+  const checkOwner = useServerFn(isPlatformAdmin);
+  const owner = useQuery({ queryKey: ["platform-admin"], queryFn: () => checkOwner() });
+  const items = [
+    ...NAV.filter((i) => isAdmin || !i.adminOnly),
+    ...(owner.data?.ok ? [{ to: "/assinaturas", label: "Assinaturas", icon: CreditCard }] : []),
+  ];
 
   return (
     <nav className="flex flex-col gap-1 px-3">

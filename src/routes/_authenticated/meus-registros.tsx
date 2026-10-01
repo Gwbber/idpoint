@@ -12,7 +12,7 @@ import { buildMonth, currentYearMonth } from "@/lib/month";
 import { formatMinutes } from "@/lib/time-utils";
 
 export const Route = createFileRoute("/_authenticated/meus-registros")({
-  head: () => ({ meta: [{ title: "Meus registros — Ponto Certo" }] }),
+  head: () => ({ meta: [{ title: "Meus registros — ID Point" }] }),
   component: MeusRegistros,
 });
 

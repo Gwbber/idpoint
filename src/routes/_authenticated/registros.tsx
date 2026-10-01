@@ -18,9 +18,9 @@ import { reviewRecords } from "@/lib/ai-review.functions";
 export const Route = createFileRoute("/_authenticated/registros")({
   head: () => ({
     meta: [
-      { title: "Registros de ponto — Ponto Certo" },
+      { title: "Registros de ponto — ID Point" },
       { name: "description", content: "Registros de ponto do mês com revisão de inconsistências por IA." },
-      { property: "og:title", content: "Registros de ponto — Ponto Certo" },
+      { property: "og:title", content: "Registros de ponto — ID Point" },
       { property: "og:description", content: "Registros de ponto do mês com revisão por IA." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

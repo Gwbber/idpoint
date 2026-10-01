@@ -19,7 +19,7 @@ import { currentYearMonth } from "@/lib/month";
 import { formatDateTime, MONTH_LABELS } from "@/lib/time-utils";
 
 export const Route = createFileRoute("/_authenticated/fechamento")({
-  head: () => ({ meta: [{ title: "Fechamento mensal — Ponto Certo" }] }),
+  head: () => ({ meta: [{ title: "Fechamento mensal — ID Point" }] }),
   component: () => (
     <AdminOnly>
       <Fechamento />

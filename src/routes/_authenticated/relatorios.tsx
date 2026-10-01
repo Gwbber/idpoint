@@ -17,7 +17,7 @@ import { logAudit } from "@/lib/audit";
 import { MONTH_LABELS, formatMinutes } from "@/lib/time-utils";
 
 export const Route = createFileRoute("/_authenticated/relatorios")({
-  head: () => ({ meta: [{ title: "Relatórios — Ponto Certo" }] }),
+  head: () => ({ meta: [{ title: "Relatórios — ID Point" }] }),
   component: () => (
     <AdminOnly>
       <Relatorios />

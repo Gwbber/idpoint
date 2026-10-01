@@ -16,9 +16,9 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
   head: () => ({
     meta: [
-      { title: "Entrar — Ponto Certo" },
+      { title: "Entrar — ID Point" },
       { name: "description", content: "Acesse o sistema de controle de ponto da empresa." },
-      { property: "og:title", content: "Entrar — Ponto Certo" },
+      { property: "og:title", content: "Entrar — ID Point" },
       {
         property: "og:description",
         content: "Acesse o sistema de controle de ponto da empresa.",
@@ -79,7 +79,7 @@ function AuthPage() {
           <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-glow">
             <Timer className="h-7 w-7" />
           </div>
-          <h1 className="mt-4 text-2xl font-extrabold tracking-tight">Ponto Certo</h1>
+          <h1 className="mt-4 text-2xl font-extrabold tracking-tight">ID Point</h1>
           <p className="mt-1 text-sm text-muted-foreground">
             Controle de jornada, horas extras e banco de horas
           </p>

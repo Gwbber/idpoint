@@ -58,7 +58,7 @@ function Brand() {
         <Timer className="h-5 w-5" />
       </div>
       <div className="leading-tight">
-        <p className="text-sm font-extrabold tracking-tight">Ponto Certo</p>
+        <p className="text-sm font-extrabold tracking-tight">ID Point</p>
         <p className="max-w-[10rem] truncate text-[11px] text-muted-foreground">
           {company?.name ?? "Controle de jornada"}
         </p>
@@ -205,7 +205,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
             <NavLinks isAdmin={isAdmin} onNavigate={() => setOpen(false)} />
           </SheetContent>
         </Sheet>
-        <span className="text-sm font-bold">Ponto Certo</span>
+        <span className="text-sm font-bold">ID Point</span>
         <Button variant="ghost" size="icon" onClick={handleSignOut} aria-label="Sair">
           <LogOut className="h-5 w-5" />
         </Button>

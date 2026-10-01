@@ -27,9 +27,9 @@ export const Route = createFileRoute("/_authenticated/ponto")({
   component: PontoPage,
   head: () => ({
     meta: [
-      { title: "Bater ponto — Ponto Certo" },
+      { title: "Bater ponto — ID Point" },
       { name: "description", content: "Registre entrada, intervalo e saída do seu expediente." },
-      { property: "og:title", content: "Bater ponto — Ponto Certo" },
+      { property: "og:title", content: "Bater ponto — ID Point" },
       {
         property: "og:description",
         content: "Registre entrada, intervalo e saída do seu expediente.",

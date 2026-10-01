@@ -9,13 +9,13 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "Ponto Certo — Controle de ponto eletrônico" },
+      { title: "ID Point — Controle de ponto eletrônico" },
       {
         name: "description",
         content:
           "Registre entrada, intervalo e saída, acompanhe horas extras e banco de horas em um só lugar.",
       },
-      { property: "og:title", content: "Ponto Certo — Controle de ponto eletrônico" },
+      { property: "og:title", content: "ID Point — Controle de ponto eletrônico" },
       {
         property: "og:description",
         content:

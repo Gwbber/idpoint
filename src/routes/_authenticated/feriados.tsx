@@ -18,7 +18,7 @@ import { logAudit } from "@/lib/audit";
 import { formatDate, WEEKDAY_LABELS, weekdayOfISO } from "@/lib/time-utils";
 
 export const Route = createFileRoute("/_authenticated/feriados")({
-  head: () => ({ meta: [{ title: "Feriados — Ponto Certo" }] }),
+  head: () => ({ meta: [{ title: "Feriados — ID Point" }] }),
   component: () => (
     <AdminOnly>
       <Feriados />

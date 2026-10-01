@@ -13,9 +13,9 @@ export const Route = createFileRoute("/redefinir-senha")({
   component: RedefinirSenha,
   head: () => ({
     meta: [
-      { title: "Criar nova senha — Ponto Certo" },
+      { title: "Criar nova senha — ID Point" },
       { name: "description", content: "Escolha uma nova senha para acessar o controle de ponto." },
-      { property: "og:title", content: "Criar nova senha — Ponto Certo" },
+      { property: "og:title", content: "Criar nova senha — ID Point" },
       {
         property: "og:description",
         content: "Escolha uma nova senha para acessar o controle de ponto.",
@@ -58,7 +58,7 @@ function RedefinirSenha() {
       toast.error("Não foi possível salvar. Use uma senha mais forte e tente de novo.");
       return;
     }
-    toast.success("Senha criada! Bem-vindo ao Ponto Certo.");
+    toast.success("Senha criada! Bem-vindo ao ID Point.");
     navigate({ to: "/ponto", replace: true });
   };
 
@@ -69,7 +69,7 @@ function RedefinirSenha() {
           <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-glow">
             <Timer className="h-7 w-7" />
           </div>
-          <h1 className="mt-4 text-2xl font-extrabold tracking-tight">Ponto Certo</h1>
+          <h1 className="mt-4 text-2xl font-extrabold tracking-tight">ID Point</h1>
         </div>
 
         <Card className="border-border/70 shadow-card">

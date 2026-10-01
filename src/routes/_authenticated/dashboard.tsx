@@ -20,7 +20,7 @@ import { buildMonth, currentYearMonth } from "@/lib/month";
 import { MONTH_LABELS, formatMinutes, formatTime, isoToDisplay, todayISO } from "@/lib/time-utils";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
-  head: () => ({ meta: [{ title: "Dashboard — Ponto Certo" }] }),
+  head: () => ({ meta: [{ title: "Dashboard — ID Point" }] }),
   component: Dashboard,
 });
 

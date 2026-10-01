@@ -10,7 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { formatDateTime } from "@/lib/time-utils";
 
 export const Route = createFileRoute("/_authenticated/auditoria")({
-  head: () => ({ meta: [{ title: "Log de auditoria — Ponto Certo" }] }),
+  head: () => ({ meta: [{ title: "Log de auditoria — ID Point" }] }),
   component: () => (
     <AdminOnly>
       <Auditoria />

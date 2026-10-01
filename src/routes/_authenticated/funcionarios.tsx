@@ -26,7 +26,7 @@ import type { Profile } from "@/lib/attendance";
 import { WEEKDAY_SHORT } from "@/lib/time-utils";
 
 export const Route = createFileRoute("/_authenticated/funcionarios")({
-  head: () => ({ meta: [{ title: "Funcionários — Ponto Certo" }] }),
+  head: () => ({ meta: [{ title: "Funcionários — ID Point" }] }),
   component: () => (
     <AdminOnly>
       <Funcionarios />

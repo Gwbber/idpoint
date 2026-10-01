@@ -14,12 +14,12 @@ export const Route = createFileRoute("/primeiro-acesso")({
   component: PrimeiroAcesso,
   head: () => ({
     meta: [
-      { title: "Primeiro acesso — Ponto Certo" },
+      { title: "Primeiro acesso — ID Point" },
       {
         name: "description",
         content: "Defina a senha da sua conta para começar a usar o controle de ponto.",
       },
-      { property: "og:title", content: "Primeiro acesso — Ponto Certo" },
+      { property: "og:title", content: "Primeiro acesso — ID Point" },
       {
         property: "og:description",
         content: "Defina a senha da sua conta para começar a usar o controle de ponto.",
@@ -61,7 +61,7 @@ function PrimeiroAcesso() {
           <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-glow">
             <Timer className="h-7 w-7" />
           </div>
-          <h1 className="mt-4 text-2xl font-extrabold tracking-tight">Ponto Certo</h1>
+          <h1 className="mt-4 text-2xl font-extrabold tracking-tight">ID Point</h1>
           <p className="mt-1 text-sm text-muted-foreground">Defina a senha do seu acesso</p>
         </div>
 

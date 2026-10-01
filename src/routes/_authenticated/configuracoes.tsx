@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { logAudit } from "@/lib/audit";
 
 export const Route = createFileRoute("/_authenticated/configuracoes")({
-  head: () => ({ meta: [{ title: "Configurações — Ponto Certo" }] }),
+  head: () => ({ meta: [{ title: "Configurações — ID Point" }] }),
   component: () => (
     <AdminOnly>
       <Configuracoes />

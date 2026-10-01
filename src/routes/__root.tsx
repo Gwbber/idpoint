@@ -80,12 +80,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Ponto Certo — Controle de ponto" },
+      { title: "ID Point — Controle de ponto" },
       {
         name: "description",
         content: "Sistema de controle de ponto, horas extras e banco de horas para empresas.",
       },
-      { property: "og:title", content: "Ponto Certo — Controle de ponto" },
+      { property: "og:title", content: "ID Point — Controle de ponto" },
       {
         property: "og:description",
         content: "Sistema de controle de ponto, horas extras e banco de horas para empresas.",

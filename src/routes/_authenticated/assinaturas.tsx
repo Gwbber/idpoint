@@ -102,6 +102,7 @@ function AssinaturasPage() {
                 <th className="p-3">Plano</th>
                 <th className="p-3">Funcionários</th>
                 <th className="p-3">Status</th>
+                <th className="p-3">Cobrança</th>
                 <th className="p-3">Próximo vencimento</th>
                 <th className="p-3">Cliente desde</th>
               </tr>
@@ -122,6 +123,7 @@ function AssinaturasPage() {
                     <td className="p-3">
                       {r.active ? <Badge>Ativa</Badge> : <Badge variant="destructive">Suspensa</Badge>}
                     </td>
+                    <td className="p-3">{r.stripe_subscription_id ? (r.billing_interval === "year" ? "Anual" : "Mensal") : "Vitalícia"}</td>
                     <td className="p-3">
                       {fmtDate(r.current_period_end)}
                       {d !== null && r.active && (
@@ -136,7 +138,7 @@ function AssinaturasPage() {
               })}
               {rows.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="p-6 text-center text-muted-foreground">
+                  <td colSpan={7} className="p-6 text-center text-muted-foreground">
                     Nenhuma empresa encontrada.
                   </td>
                 </tr>

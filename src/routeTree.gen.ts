@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as PlanosRouteImport } from './routes/planos'
 import { Route as PrimeiroAcessoRouteImport } from './routes/primeiro-acesso'
 import { Route as RedefinirSenhaRouteImport } from './routes/redefinir-senha'
 import { Route as AuthenticatedAssinaturasRouteImport } from './routes/_authenticated/assinaturas'
@@ -25,8 +26,9 @@ import { Route as AuthenticatedMeusRegistrosRouteImport } from './routes/_authen
 import { Route as AuthenticatedPontoRouteImport } from './routes/_authenticated/ponto'
 import { Route as AuthenticatedRegistrosRouteImport } from './routes/_authenticated/registros'
 import { Route as AuthenticatedRelatoriosRouteImport } from './routes/_authenticated/relatorios'
-import { Route as ApiPublicAsaasWebhookRouteImport } from './routes/api/public/asaas-webhook'
+import { Route as CheckoutRetornoRouteImport } from './routes/checkout/retorno'
 import { Route as ApiPublicCaktoWebhookRouteImport } from './routes/api/public/cakto-webhook'
+import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,6 +42,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlanosRoute = PlanosRouteImport.update({
+  id: '/planos',
+  path: '/planos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrimeiroAcessoRoute = PrimeiroAcessoRouteImport.update({
@@ -111,9 +118,9 @@ const AuthenticatedRelatoriosRoute = AuthenticatedRelatoriosRouteImport.update({
   path: '/relatorios',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const ApiPublicAsaasWebhookRoute = ApiPublicAsaasWebhookRouteImport.update({
-  id: '/api/public/asaas-webhook',
-  path: '/api/public/asaas-webhook',
+const CheckoutRetornoRoute = CheckoutRetornoRouteImport.update({
+  id: '/checkout/retorno',
+  path: '/checkout/retorno',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicCaktoWebhookRoute = ApiPublicCaktoWebhookRouteImport.update({
@@ -121,10 +128,17 @@ const ApiPublicCaktoWebhookRoute = ApiPublicCaktoWebhookRouteImport.update({
   path: '/api/public/cakto-webhook',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicPaymentsWebhookRoute =
+  ApiPublicPaymentsWebhookRouteImport.update({
+    id: '/api/public/payments/webhook',
+    path: '/api/public/payments/webhook',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/planos': typeof PlanosRoute
   '/primeiro-acesso': typeof PrimeiroAcessoRoute
   '/redefinir-senha': typeof RedefinirSenhaRoute
   '/assinaturas': typeof AuthenticatedAssinaturasRoute
@@ -138,12 +152,14 @@ export interface FileRoutesByFullPath {
   '/ponto': typeof AuthenticatedPontoRoute
   '/registros': typeof AuthenticatedRegistrosRoute
   '/relatorios': typeof AuthenticatedRelatoriosRoute
-  '/api/public/asaas-webhook': typeof ApiPublicAsaasWebhookRoute
+  '/checkout/retorno': typeof CheckoutRetornoRoute
   '/api/public/cakto-webhook': typeof ApiPublicCaktoWebhookRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/planos': typeof PlanosRoute
   '/primeiro-acesso': typeof PrimeiroAcessoRoute
   '/redefinir-senha': typeof RedefinirSenhaRoute
   '/assinaturas': typeof AuthenticatedAssinaturasRoute
@@ -157,14 +173,16 @@ export interface FileRoutesByTo {
   '/ponto': typeof AuthenticatedPontoRoute
   '/registros': typeof AuthenticatedRegistrosRoute
   '/relatorios': typeof AuthenticatedRelatoriosRoute
-  '/api/public/asaas-webhook': typeof ApiPublicAsaasWebhookRoute
+  '/checkout/retorno': typeof CheckoutRetornoRoute
   '/api/public/cakto-webhook': typeof ApiPublicCaktoWebhookRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/planos': typeof PlanosRoute
   '/primeiro-acesso': typeof PrimeiroAcessoRoute
   '/redefinir-senha': typeof RedefinirSenhaRoute
   '/_authenticated/assinaturas': typeof AuthenticatedAssinaturasRoute
@@ -178,14 +196,16 @@ export interface FileRoutesById {
   '/_authenticated/ponto': typeof AuthenticatedPontoRoute
   '/_authenticated/registros': typeof AuthenticatedRegistrosRoute
   '/_authenticated/relatorios': typeof AuthenticatedRelatoriosRoute
-  '/api/public/asaas-webhook': typeof ApiPublicAsaasWebhookRoute
+  '/checkout/retorno': typeof CheckoutRetornoRoute
   '/api/public/cakto-webhook': typeof ApiPublicCaktoWebhookRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/auth'
+    | '/planos'
     | '/primeiro-acesso'
     | '/redefinir-senha'
     | '/assinaturas'
@@ -199,12 +219,14 @@ export interface FileRouteTypes {
     | '/ponto'
     | '/registros'
     | '/relatorios'
-    | '/api/public/asaas-webhook'
+    | '/checkout/retorno'
     | '/api/public/cakto-webhook'
+    | '/api/public/payments/webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
+    | '/planos'
     | '/primeiro-acesso'
     | '/redefinir-senha'
     | '/assinaturas'
@@ -218,13 +240,15 @@ export interface FileRouteTypes {
     | '/ponto'
     | '/registros'
     | '/relatorios'
-    | '/api/public/asaas-webhook'
+    | '/checkout/retorno'
     | '/api/public/cakto-webhook'
+    | '/api/public/payments/webhook'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/planos'
     | '/primeiro-acesso'
     | '/redefinir-senha'
     | '/_authenticated/assinaturas'
@@ -238,18 +262,21 @@ export interface FileRouteTypes {
     | '/_authenticated/ponto'
     | '/_authenticated/registros'
     | '/_authenticated/relatorios'
-    | '/api/public/asaas-webhook'
+    | '/checkout/retorno'
     | '/api/public/cakto-webhook'
+    | '/api/public/payments/webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  PlanosRoute: typeof PlanosRoute
   PrimeiroAcessoRoute: typeof PrimeiroAcessoRoute
   RedefinirSenhaRoute: typeof RedefinirSenhaRoute
-  ApiPublicAsaasWebhookRoute: typeof ApiPublicAsaasWebhookRoute
+  CheckoutRetornoRoute: typeof CheckoutRetornoRoute
   ApiPublicCaktoWebhookRoute: typeof ApiPublicCaktoWebhookRoute
+  ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -273,6 +300,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/planos': {
+      id: '/planos'
+      path: '/planos'
+      fullPath: '/planos'
+      preLoaderRoute: typeof PlanosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/primeiro-acesso': {
@@ -366,11 +400,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRelatoriosRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/api/public/asaas-webhook': {
-      id: '/api/public/asaas-webhook'
-      path: '/api/public/asaas-webhook'
-      fullPath: '/api/public/asaas-webhook'
-      preLoaderRoute: typeof ApiPublicAsaasWebhookRouteImport
+    '/checkout/retorno': {
+      id: '/checkout/retorno'
+      path: '/checkout/retorno'
+      fullPath: '/checkout/retorno'
+      preLoaderRoute: typeof CheckoutRetornoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/cakto-webhook': {
@@ -378,6 +412,13 @@ declare module '@tanstack/react-router' {
       path: '/api/public/cakto-webhook'
       fullPath: '/api/public/cakto-webhook'
       preLoaderRoute: typeof ApiPublicCaktoWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/payments/webhook': {
+      id: '/api/public/payments/webhook'
+      path: '/api/public/payments/webhook'
+      fullPath: '/api/public/payments/webhook'
+      preLoaderRoute: typeof ApiPublicPaymentsWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -418,10 +459,12 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  PlanosRoute: PlanosRoute,
   PrimeiroAcessoRoute: PrimeiroAcessoRoute,
   RedefinirSenhaRoute: RedefinirSenhaRoute,
-  ApiPublicAsaasWebhookRoute: ApiPublicAsaasWebhookRoute,
+  CheckoutRetornoRoute: CheckoutRetornoRoute,
   ApiPublicCaktoWebhookRoute: ApiPublicCaktoWebhookRoute,
+  ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

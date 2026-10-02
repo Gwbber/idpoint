@@ -166,6 +166,7 @@ export type Database = {
           asaas_customer_id: string | null
           asaas_subscription_id: string | null
           billing_email: string | null
+          billing_interval: string | null
           cakto_customer_id: string | null
           cakto_offer_id: string | null
           cakto_subscription_id: string | null
@@ -177,6 +178,8 @@ export type Database = {
           max_employees: number
           name: string
           plan: string
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
           subscription_status: string
           updated_at: string
         }
@@ -185,6 +188,7 @@ export type Database = {
           asaas_customer_id?: string | null
           asaas_subscription_id?: string | null
           billing_email?: string | null
+          billing_interval?: string | null
           cakto_customer_id?: string | null
           cakto_offer_id?: string | null
           cakto_subscription_id?: string | null
@@ -196,6 +200,8 @@ export type Database = {
           max_employees?: number
           name: string
           plan?: string
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
           subscription_status?: string
           updated_at?: string
         }
@@ -204,6 +210,7 @@ export type Database = {
           asaas_customer_id?: string | null
           asaas_subscription_id?: string | null
           billing_email?: string | null
+          billing_interval?: string | null
           cakto_customer_id?: string | null
           cakto_offer_id?: string | null
           cakto_subscription_id?: string | null
@@ -215,6 +222,8 @@ export type Database = {
           max_employees?: number
           name?: string
           plan?: string
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
           subscription_status?: string
           updated_at?: string
         }
@@ -348,6 +357,65 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "profiles_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      subscriptions: {
+        Row: {
+          cancel_at_period_end: boolean
+          company_id: string
+          created_at: string
+          current_period_end: string | null
+          current_period_start: string | null
+          environment: string
+          id: string
+          price_id: string
+          product_id: string
+          status: string
+          stripe_customer_id: string
+          stripe_subscription_id: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          cancel_at_period_end?: boolean
+          company_id: string
+          created_at?: string
+          current_period_end?: string | null
+          current_period_start?: string | null
+          environment?: string
+          id?: string
+          price_id: string
+          product_id: string
+          status?: string
+          stripe_customer_id: string
+          stripe_subscription_id: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          cancel_at_period_end?: boolean
+          company_id?: string
+          created_at?: string
+          current_period_end?: string | null
+          current_period_start?: string | null
+          environment?: string
+          id?: string
+          price_id?: string
+          product_id?: string
+          status?: string
+          stripe_customer_id?: string
+          stripe_subscription_id?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscriptions_company_id_fkey"
             columns: ["company_id"]
             isOneToOne: false
             referencedRelation: "companies"

@@ -129,6 +129,10 @@ function AuthPage() {
                 Defina sua senha
               </Link>
             </p>
+            <p className="mt-3 text-center text-xs text-muted-foreground">
+              Ainda não é cliente?{" "}
+              <Link to="/planos" className="font-semibold text-primary hover:underline">Conheça os planos</Link>
+            </p>
           </CardContent>
         </Card>
       </div>

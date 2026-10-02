@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 type Interval = "monthly" | "yearly";
 type PlanKey = "start" | "pro" | "enterprise";
 const plans = [
-  { key: "start" as const, name: "Start", monthly: "59,90", yearly: "574,80", limit: "Até 10 funcionários", features: ["Registro completo de jornada", "Relatórios em PDF", "Fechamento mensal"] },
+  { key: "start" as const, name: "Start", monthly: "99,90", yearly: "959,04", limit: "Até 10 funcionários", features: ["Registro completo de jornada", "Relatórios em PDF", "Fechamento mensal"] },
   { key: "pro" as const, name: "Pro", monthly: "199,90", yearly: "1.918,80", limit: "Até 50 funcionários", features: ["Tudo do Start", "Análise de inconsistências com IA", "Auditoria e ajustes avançados"], featured: true },
   { key: "enterprise" as const, name: "Enterprise", monthly: "299,90", yearly: "2.878,80", limit: "A partir de 51 funcionários", features: ["Tudo do Pro", "Customizações por empresa", "Atendimento comercial dedicado"] },
 ];

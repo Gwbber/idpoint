@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { CheckCircle2, Timer } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { SiteFooter } from "@/components/SiteFooter";
 
 export const Route = createFileRoute("/checkout/retorno")({
   validateSearch: (search: Record<string, unknown>): { session_id?: string } =>
@@ -18,10 +19,10 @@ export const Route = createFileRoute("/checkout/retorno")({
 
 function CheckoutReturn() {
   const { session_id } = Route.useSearch();
-  return <main className="surface-gradient flex min-h-screen items-center justify-center bg-background px-4"><div className="max-w-lg text-center">
+  return <div className="surface-gradient flex min-h-screen flex-col bg-background"><main className="flex flex-1 items-center justify-center px-4"><div className="max-w-lg text-center">
     <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-md bg-success/15 text-success">{session_id ? <CheckCircle2 className="h-8 w-8" /> : <Timer className="h-8 w-8" />}</span>
     <h1 className="mt-5 text-3xl font-extrabold">{session_id ? "Assinatura recebida" : "Aguardando confirmação"}</h1>
     <p className="mt-3 text-muted-foreground">Assim que o pagamento for confirmado, sua empresa será preparada automaticamente. Depois, use o e-mail da compra para definir sua senha.</p>
     <Button asChild className="mt-7"><Link to="/primeiro-acesso">Definir minha senha</Link></Button>
-  </div></main>;
+  </div></main><SiteFooter /></div>;
 }

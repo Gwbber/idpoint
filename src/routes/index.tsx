@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { Clock } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { isRecoveryUrl, recoveryTargetUrl } from "@/lib/recovery";
+import { SiteFooter } from "@/components/SiteFooter";
 
 export const Route = createFileRoute("/")({
   ssr: false,
@@ -39,11 +40,14 @@ function Index() {
   }, [session, loading, navigate]);
 
   return (
-    <div className="surface-gradient flex min-h-screen items-center justify-center bg-background">
-      <div className="flex items-center gap-3 text-muted-foreground">
+    <div className="surface-gradient flex min-h-screen flex-col bg-background">
+      <main className="flex flex-1 items-center justify-center">
+        <div className="flex items-center gap-3 text-muted-foreground">
         <Clock className="h-5 w-5 animate-spin text-primary" />
         Carregando…
-      </div>
+        </div>
+      </main>
+      <SiteFooter />
     </div>
   );
 }

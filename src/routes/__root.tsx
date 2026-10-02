@@ -14,11 +14,13 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AuthProvider } from "@/hooks/useAuth";
 import { Toaster } from "@/components/ui/sonner";
+import { SiteFooter } from "@/components/SiteFooter";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
+    <div className="flex min-h-screen flex-col bg-background">
+      <main className="flex flex-1 items-center justify-center px-4">
+        <div className="max-w-md text-center">
         <h1 className="text-7xl font-bold text-foreground">404</h1>
         <h2 className="mt-4 text-xl font-semibold text-foreground">Página não encontrada</h2>
         <p className="mt-2 text-sm text-muted-foreground">
@@ -32,7 +34,9 @@ function NotFoundComponent() {
             Voltar ao início
           </Link>
         </div>
-      </div>
+        </div>
+      </main>
+      <SiteFooter />
     </div>
   );
 }
@@ -45,8 +49,9 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
   }, [error]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
+    <div className="flex min-h-screen flex-col bg-background">
+      <main className="flex flex-1 items-center justify-center px-4">
+        <div className="max-w-md text-center">
         <h1 className="text-xl font-semibold tracking-tight text-foreground">
           Não foi possível carregar esta página
         </h1>
@@ -70,7 +75,9 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
             Ir para o início
           </a>
         </div>
-      </div>
+        </div>
+      </main>
+      <SiteFooter />
     </div>
   );
 }

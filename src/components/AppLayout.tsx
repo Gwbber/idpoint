@@ -20,6 +20,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { isPlatformAdmin } from "@/lib/platform.functions";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
+import { SiteFooter } from "@/components/SiteFooter";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import {
   AlertDialog,
@@ -151,8 +152,9 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
   if (company && !company.active) {
     return (
-      <div className="surface-gradient flex min-h-screen items-center justify-center bg-background px-4 text-center">
-        <div className="max-w-md space-y-4">
+      <div className="surface-gradient flex min-h-screen flex-col bg-background text-center">
+        <div className="flex flex-1 items-center justify-center px-4">
+          <div className="max-w-md space-y-4">
           <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-glow">
             <Lock className="h-7 w-7" />
           </div>
@@ -162,7 +164,9 @@ export function AppLayout({ children }: { children: ReactNode }) {
             acesso de toda a equipe. Se já pagou, aguarde alguns minutos ou fale com o suporte.
           </p>
           <Button onClick={handleSignOut}>Sair</Button>
+          </div>
         </div>
+        <SiteFooter />
       </div>
     );
   }
@@ -211,8 +215,9 @@ export function AppLayout({ children }: { children: ReactNode }) {
         </Button>
       </header>
 
-      <main className="surface-gradient min-h-screen lg:pl-64">
-        <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">{children}</div>
+      <main className="surface-gradient flex min-h-screen flex-col lg:pl-64">
+        <div className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">{children}</div>
+        <SiteFooter />
       </main>
 
       <AlertDialog open={warning} onOpenChange={setWarning}>

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { SiteFooter } from "@/components/SiteFooter";
 
 export const Route = createFileRoute("/primeiro-acesso")({
   ssr: false,
@@ -55,8 +56,9 @@ function PrimeiroAcesso() {
   };
 
   return (
-    <div className="surface-gradient flex min-h-screen items-center justify-center bg-background px-4 py-10">
-      <div className="w-full max-w-md">
+    <div className="surface-gradient flex min-h-screen flex-col bg-background">
+      <main className="flex flex-1 items-center justify-center px-4 py-10">
+        <div className="w-full max-w-md">
         <div className="mb-8 flex flex-col items-center text-center">
           <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-glow">
             <Timer className="h-7 w-7" />
@@ -113,7 +115,9 @@ function PrimeiroAcesso() {
             )}
           </CardContent>
         </Card>
-      </div>
+        </div>
+      </main>
+      <SiteFooter />
     </div>
   );
 }

@@ -29,7 +29,7 @@ export const PLANS: Record<PlanKey, { label: string; max_employees: number }> = 
 export function resolvePlan(raw?: string | null): PlanKey {
   const v = (raw ?? "").toLowerCase();
   if (v.includes("enterprise") || v.includes("ilimit")) return "enterprise";
-  if (v.includes("pro") || v.includes("50")) return "pro";
+  if (v.includes("pro") || v.includes("50") || v.includes("149")) return "pro";
   return "start";
 }
 

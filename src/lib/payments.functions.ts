@@ -27,7 +27,7 @@ async function resolveCustomer(
     await stripe.customers.update(customer.id, { metadata: { ...customer.metadata, ...metadata } });
     return customer.id;
   }
-  return (await stripe.customers.create({ email, name: metadata.adminName, metadata })).id;
+  return (await stripe.customers.create({ email, name: metadata["adminName"] ?? "Administrador", metadata })).id;
 }
 
 export const createCheckoutSession = createServerFn({ method: "POST" })

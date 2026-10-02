@@ -57,8 +57,6 @@ export type ProvisionInput = {
   caktoSubscriptionId?: string | null;
   caktoOfferId?: string | null;
   currentPeriodEnd?: string | null;
-  asaasCustomerId?: string | null;
-  asaasSubscriptionId?: string | null;
   stripeCustomerId?: string | null;
   stripeSubscriptionId?: string | null;
   billingInterval?: string | null;
@@ -85,14 +83,6 @@ export async function provisionCompany(input: ProvisionInput): Promise<Provision
       .from("companies")
       .select("id")
       .eq("cakto_subscription_id", input.caktoSubscriptionId)
-      .maybeSingle();
-    existing = data ?? null;
-  }
-  if (!existing && input.asaasSubscriptionId) {
-    const { data } = await supabaseAdmin
-      .from("companies")
-      .select("id")
-      .eq("asaas_subscription_id", input.asaasSubscriptionId)
       .maybeSingle();
     existing = data ?? null;
   }
@@ -128,12 +118,6 @@ export async function provisionCompany(input: ProvisionInput): Promise<Provision
               cakto_offer_id: input.caktoOfferId ?? null,
             }
           : {}),
-        ...(input.asaasSubscriptionId
-          ? {
-              asaas_customer_id: input.asaasCustomerId ?? null,
-              asaas_subscription_id: input.asaasSubscriptionId,
-            }
-          : {}),
         ...(input.stripeSubscriptionId
           ? {
               stripe_customer_id: input.stripeCustomerId ?? null,
@@ -161,8 +145,6 @@ export async function provisionCompany(input: ProvisionInput): Promise<Provision
       cakto_customer_id: input.caktoCustomerId ?? null,
       cakto_subscription_id: input.caktoSubscriptionId ?? null,
       cakto_offer_id: input.caktoOfferId ?? null,
-      asaas_customer_id: input.asaasCustomerId ?? null,
-      asaas_subscription_id: input.asaasSubscriptionId ?? null,
       stripe_customer_id: input.stripeCustomerId ?? null,
       stripe_subscription_id: input.stripeSubscriptionId ?? null,
       billing_interval: input.billingInterval ?? null,
@@ -258,15 +240,12 @@ export async function provisionCompany(input: ProvisionInput): Promise<Provision
 /** Bloqueia o acesso da empresa (cancelamento, reembolso ou inadimplência). */
 export async function suspendCompanyBySubscription(params: {
   subscriptionId?: string | null;
-  asaasSubscriptionId?: string | null;
   stripeSubscriptionId?: string | null;
   email?: string | null;
   status: string;
 }): Promise<string | null> {
   let query = supabaseAdmin.from("companies").select("id");
-  if (params.asaasSubscriptionId) {
-    query = query.eq("asaas_subscription_id", params.asaasSubscriptionId);
-  } else if (params.stripeSubscriptionId) {
+  if (params.stripeSubscriptionId) {
     query = query.eq("stripe_subscription_id", params.stripeSubscriptionId);
   } else if (params.subscriptionId) {
     query = query.eq("cakto_subscription_id", params.subscriptionId);

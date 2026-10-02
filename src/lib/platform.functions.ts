@@ -25,7 +25,7 @@ export const listSubscriptions = createServerFn({ method: "GET" })
     const [{ data: companies, error }, { data: profiles }] = await Promise.all([
       supabaseAdmin
         .from("companies")
-        .select("id,name,cnpj,plan,max_employees,active,subscription_status,billing_email,current_period_end,created_at")
+        .select("id,name,cnpj,plan,max_employees,active,subscription_status,billing_email,current_period_end,created_at,stripe_customer_id,stripe_subscription_id,billing_interval")
         .order("created_at", { ascending: false }),
       supabaseAdmin.from("profiles").select("company_id,active"),
     ]);

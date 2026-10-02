@@ -12,5 +12,6 @@
 ## Regras do projeto
 
 - Multi-tenant por linha: toda tabela de dados tem `company_id` (default `current_company_id()`), e as políticas RLS isolam por empresa — garante que um cliente nunca veja dados de outro.
-- Provisionamento de clientes acontece em `src/lib/provisioning.server.ts`, chamado pelo webhook `src/routes/api/public/cakto-webhook.ts` — evita criação manual de contas na venda.
+- Provisionamento de clientes acontece em `src/lib/provisioning.server.ts`, chamado pelo webhook público de pagamentos — evita criação manual de contas na venda.
+- Novas vendas usam a integração gerenciada do Stripe com checkout incorporado; dados antigos de Cakto e Asaas são apenas históricos — mantém uma única origem ativa de cobrança.
 - Customizações exclusivas de um cliente ficam em `companies.custom_features` (JSONB) — permite ligar recursos sob medida sem afetar as demais empresas.

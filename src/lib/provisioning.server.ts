@@ -59,6 +59,9 @@ export type ProvisionInput = {
   currentPeriodEnd?: string | null;
   asaasCustomerId?: string | null;
   asaasSubscriptionId?: string | null;
+  stripeCustomerId?: string | null;
+  stripeSubscriptionId?: string | null;
+  billingInterval?: string | null;
   origin?: string;
 };
 
@@ -93,6 +96,14 @@ export async function provisionCompany(input: ProvisionInput): Promise<Provision
       .maybeSingle();
     existing = data ?? null;
   }
+  if (!existing && input.stripeSubscriptionId) {
+    const { data } = await supabaseAdmin
+      .from("companies")
+      .select("id")
+      .eq("stripe_subscription_id", input.stripeSubscriptionId)
+      .maybeSingle();
+    existing = data ?? null;
+  }
   if (!existing) {
     const { data } = await supabaseAdmin
       .from("companies")
@@ -123,6 +134,13 @@ export async function provisionCompany(input: ProvisionInput): Promise<Provision
               asaas_subscription_id: input.asaasSubscriptionId,
             }
           : {}),
+        ...(input.stripeSubscriptionId
+          ? {
+              stripe_customer_id: input.stripeCustomerId ?? null,
+              stripe_subscription_id: input.stripeSubscriptionId,
+              billing_interval: input.billingInterval ?? null,
+            }
+          : {}),
         current_period_end: input.currentPeriodEnd ?? null,
       })
       .eq("id", existing.id);
@@ -145,6 +163,9 @@ export async function provisionCompany(input: ProvisionInput): Promise<Provision
       cakto_offer_id: input.caktoOfferId ?? null,
       asaas_customer_id: input.asaasCustomerId ?? null,
       asaas_subscription_id: input.asaasSubscriptionId ?? null,
+      stripe_customer_id: input.stripeCustomerId ?? null,
+      stripe_subscription_id: input.stripeSubscriptionId ?? null,
+      billing_interval: input.billingInterval ?? null,
       current_period_end: input.currentPeriodEnd ?? null,
     })
     .select("id")
@@ -238,12 +259,15 @@ export async function provisionCompany(input: ProvisionInput): Promise<Provision
 export async function suspendCompanyBySubscription(params: {
   subscriptionId?: string | null;
   asaasSubscriptionId?: string | null;
+  stripeSubscriptionId?: string | null;
   email?: string | null;
   status: string;
 }): Promise<string | null> {
   let query = supabaseAdmin.from("companies").select("id");
   if (params.asaasSubscriptionId) {
     query = query.eq("asaas_subscription_id", params.asaasSubscriptionId);
+  } else if (params.stripeSubscriptionId) {
+    query = query.eq("stripe_subscription_id", params.stripeSubscriptionId);
   } else if (params.subscriptionId) {
     query = query.eq("cakto_subscription_id", params.subscriptionId);
   } else if (params.email) {

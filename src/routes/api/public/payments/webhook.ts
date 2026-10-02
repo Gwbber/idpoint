@@ -45,6 +45,8 @@ async function upsertSubscription(subscription: any, env: StripeEnv) {
 
   const status = subscription.status ?? "active";
   const periodEnd = periodIso(item, subscription, "current_period_end");
+  const planKey = metadata.plan ?? priceKey(item).split("_")[0];
+  const maxEmployees = planKey === "enterprise" ? 1000 : planKey === "pro" ? 50 : 10;
   const remainsActive = ["active", "trialing", "past_due"].includes(status)
     || (status === "canceled" && periodEnd !== null && new Date(periodEnd).getTime() > Date.now());
 
@@ -53,7 +55,8 @@ async function upsertSubscription(subscription: any, env: StripeEnv) {
     stripe_subscription_id: subscription.id,
     subscription_status: status,
     active: remainsActive,
-    plan: metadata.plan ?? priceKey(item).split("_")[0],
+    plan: planKey,
+    max_employees: maxEmployees,
     billing_interval: metadata.billingInterval ?? item?.price?.recurring?.interval ?? null,
     current_period_end: periodEnd,
   }).eq("id", company.id);

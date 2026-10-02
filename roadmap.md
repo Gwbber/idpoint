@@ -6,4 +6,4 @@
 - [x] Ligar compras, renovações e cancelamentos ao provisionamento
 - [x] Atualizar painel administrativo de assinaturas
 - [x] Retirar a entrada antiga do Asaas do aplicativo
-- [ ] Validar compilação e fluxo visual em celular e computador
+- [x] Validar compilação e fluxo visual em celular e computador

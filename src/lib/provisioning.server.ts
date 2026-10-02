@@ -29,7 +29,7 @@ export const PLANS: Record<PlanKey, { label: string; max_employees: number }> = 
 export function resolvePlan(raw?: string | null): PlanKey {
   const v = (raw ?? "").toLowerCase();
   if (v.includes("enterprise") || v.includes("ilimit")) return "enterprise";
-  if (v.includes("pro") || v.includes("50")) return "pro";
+  if (v.includes("pro") || v.includes("50") || v.includes("149")) return "pro";
   return "start";
 }
 
@@ -57,6 +57,9 @@ export type ProvisionInput = {
   caktoSubscriptionId?: string | null;
   caktoOfferId?: string | null;
   currentPeriodEnd?: string | null;
+  asaasCustomerId?: string | null;
+  asaasSubscriptionId?: string | null;
+  origin?: string;
 };
 
 export type ProvisionResult = {
@@ -82,6 +85,14 @@ export async function provisionCompany(input: ProvisionInput): Promise<Provision
       .maybeSingle();
     existing = data ?? null;
   }
+  if (!existing && input.asaasSubscriptionId) {
+    const { data } = await supabaseAdmin
+      .from("companies")
+      .select("id")
+      .eq("asaas_subscription_id", input.asaasSubscriptionId)
+      .maybeSingle();
+    existing = data ?? null;
+  }
   if (!existing) {
     const { data } = await supabaseAdmin
       .from("companies")
@@ -99,9 +110,19 @@ export async function provisionCompany(input: ProvisionInput): Promise<Provision
         subscription_status: "active",
         plan: planKey,
         max_employees: plan.max_employees,
-        cakto_customer_id: input.caktoCustomerId ?? null,
-        cakto_subscription_id: input.caktoSubscriptionId ?? null,
-        cakto_offer_id: input.caktoOfferId ?? null,
+        ...(input.caktoSubscriptionId
+          ? {
+              cakto_customer_id: input.caktoCustomerId ?? null,
+              cakto_subscription_id: input.caktoSubscriptionId,
+              cakto_offer_id: input.caktoOfferId ?? null,
+            }
+          : {}),
+        ...(input.asaasSubscriptionId
+          ? {
+              asaas_customer_id: input.asaasCustomerId ?? null,
+              asaas_subscription_id: input.asaasSubscriptionId,
+            }
+          : {}),
         current_period_end: input.currentPeriodEnd ?? null,
       })
       .eq("id", existing.id);
@@ -122,6 +143,8 @@ export async function provisionCompany(input: ProvisionInput): Promise<Provision
       cakto_customer_id: input.caktoCustomerId ?? null,
       cakto_subscription_id: input.caktoSubscriptionId ?? null,
       cakto_offer_id: input.caktoOfferId ?? null,
+      asaas_customer_id: input.asaasCustomerId ?? null,
+      asaas_subscription_id: input.asaasSubscriptionId ?? null,
       current_period_end: input.currentPeriodEnd ?? null,
     })
     .select("id")
@@ -197,7 +220,7 @@ export async function provisionCompany(input: ProvisionInput): Promise<Provision
     action: "company_registered",
     entity: "company",
     entity_id: company.id,
-    details: { plan: planKey, origem: "cakto" },
+    details: { plan: planKey, origem: input.origin ?? "cakto" },
   });
 
   let recoveryLink: string | null = null;
@@ -214,11 +237,14 @@ export async function provisionCompany(input: ProvisionInput): Promise<Provision
 /** Bloqueia o acesso da empresa (cancelamento, reembolso ou inadimplência). */
 export async function suspendCompanyBySubscription(params: {
   subscriptionId?: string | null;
+  asaasSubscriptionId?: string | null;
   email?: string | null;
   status: string;
 }): Promise<string | null> {
   let query = supabaseAdmin.from("companies").select("id");
-  if (params.subscriptionId) {
+  if (params.asaasSubscriptionId) {
+    query = query.eq("asaas_subscription_id", params.asaasSubscriptionId);
+  } else if (params.subscriptionId) {
     query = query.eq("cakto_subscription_id", params.subscriptionId);
   } else if (params.email) {
     query = query.ilike("billing_email", params.email.trim().toLowerCase());

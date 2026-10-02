@@ -43,6 +43,41 @@ export type Database = {
           },
         ]
       }
+      asaas_events: {
+        Row: {
+          company_id: string | null
+          created_at: string
+          event_id: string
+          event_type: string
+          id: string
+          payload: Json
+        }
+        Insert: {
+          company_id?: string | null
+          created_at?: string
+          event_id: string
+          event_type: string
+          id?: string
+          payload?: Json
+        }
+        Update: {
+          company_id?: string | null
+          created_at?: string
+          event_id?: string
+          event_type?: string
+          id?: string
+          payload?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "asaas_events_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       audit_logs: {
         Row: {
           action: string
@@ -128,6 +163,8 @@ export type Database = {
       companies: {
         Row: {
           active: boolean
+          asaas_customer_id: string | null
+          asaas_subscription_id: string | null
           billing_email: string | null
           cakto_customer_id: string | null
           cakto_offer_id: string | null
@@ -145,6 +182,8 @@ export type Database = {
         }
         Insert: {
           active?: boolean
+          asaas_customer_id?: string | null
+          asaas_subscription_id?: string | null
           billing_email?: string | null
           cakto_customer_id?: string | null
           cakto_offer_id?: string | null
@@ -162,6 +201,8 @@ export type Database = {
         }
         Update: {
           active?: boolean
+          asaas_customer_id?: string | null
+          asaas_subscription_id?: string | null
           billing_email?: string | null
           cakto_customer_id?: string | null
           cakto_offer_id?: string | null

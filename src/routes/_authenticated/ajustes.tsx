@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useEmployees } from "@/hooks/useAttendance";
-import { getResponsibleAdmin } from "@/lib/adjustments.functions";
+import { completePointAdjustment, getResponsibleAdmin, rejectPointAdjustment } from "@/lib/adjustments.functions";
 import type { PointAdjustmentRequest } from "@/lib/attendance";
 import { formatDate, formatDateTime, formatTime, localTimeToISO, todayISO } from "@/lib/time-utils";
 import { logAudit } from "@/lib/audit";
@@ -67,6 +67,8 @@ function AjustesPage() {
   const { user, profile, isAdmin } = useAuth();
   const queryClient = useQueryClient();
   const responsibleFn = useServerFn(getResponsibleAdmin);
+  const completeAdjustment = useServerFn(completePointAdjustment);
+  const rejectAdjustment = useServerFn(rejectPointAdjustment);
   const employees = useEmployees();
   const [date, setDate] = useState(todayISO());
   const [times, setTimes] = useState<Times>(emptyTimes);
@@ -124,15 +126,14 @@ function AjustesPage() {
     if (!reviewing || !user || !validateTimes(reviewTimes)) { toast.error("Revise a ordem dos horários."); return; }
     setSaving(true);
     try {
-      const { error } = await supabase.rpc("complete_point_adjustment", {
-        _request_id: reviewing.id,
-        _clock_in: localTimeToISO(reviewing.work_date, reviewTimes.clockIn),
-        _lunch_start: localTimeToISO(reviewing.work_date, reviewTimes.lunchStart),
-        _lunch_end: localTimeToISO(reviewing.work_date, reviewTimes.lunchEnd),
-        _clock_out: localTimeToISO(reviewing.work_date, reviewTimes.clockOut),
-        _review_notes: reviewNotes,
-      });
-      if (error) throw error;
+      await completeAdjustment({ data: {
+        requestId: reviewing.id,
+        clockIn: localTimeToISO(reviewing.work_date, reviewTimes.clockIn),
+        lunchStart: localTimeToISO(reviewing.work_date, reviewTimes.lunchStart),
+        lunchEnd: localTimeToISO(reviewing.work_date, reviewTimes.lunchEnd),
+        clockOut: localTimeToISO(reviewing.work_date, reviewTimes.clockOut),
+        reviewNotes,
+      } });
       await logAudit({ actorId: user.id, actorName: profile?.full_name ?? "", action: "adjustment_approved", entity: "point_adjustment_request", entityId: reviewing.id, details: { employee: names.get(reviewing.employee_id), date: reviewing.work_date } });
       toast.success("Ajuste aprovado e ponto corrigido.");
       setReviewing(null);
@@ -146,8 +147,7 @@ function AjustesPage() {
     if (!reviewNotes.trim()) { toast.error("Informe o motivo da recusa."); return; }
     setSaving(true);
     try {
-      const { error } = await supabase.rpc("reject_point_adjustment", { _request_id: reviewing.id, _review_notes: reviewNotes.trim() });
-      if (error) throw error;
+      await rejectAdjustment({ data: { requestId: reviewing.id, reviewNotes: reviewNotes.trim() } });
       await logAudit({ actorId: user.id, actorName: profile?.full_name ?? "", action: "adjustment_rejected", entity: "point_adjustment_request", entityId: reviewing.id, details: { employee: names.get(reviewing.employee_id), date: reviewing.work_date } });
       toast.success("Solicitação recusada.");
       setReviewing(null);

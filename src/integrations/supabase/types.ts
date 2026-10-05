@@ -705,6 +705,7 @@ export type Database = {
           _lunch_start: string
           _request_id: string
           _review_notes?: string
+          _reviewer_id: string
         }
         Returns: string
       }
@@ -719,7 +720,11 @@ export type Database = {
       is_active_employee: { Args: never; Returns: boolean }
       is_admin: { Args: never; Returns: boolean }
       reject_point_adjustment: {
-        Args: { _request_id: string; _review_notes: string }
+        Args: {
+          _request_id: string
+          _review_notes: string
+          _reviewer_id: string
+        }
         Returns: undefined
       }
     }

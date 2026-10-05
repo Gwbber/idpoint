@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import {
   AlarmClock,
+  FilePenLine,
   CalendarDays,
   ClipboardList,
   FileBarChart,
@@ -42,6 +43,7 @@ const NAV: NavItem[] = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/ponto", label: "Bater ponto", icon: Timer },
   { to: "/meus-registros", label: "Meus registros", icon: ClipboardList },
+  { to: "/ajustes", label: "Ajustes de ponto", icon: FilePenLine },
   { to: "/funcionarios", label: "Funcionários", icon: Users, adminOnly: true },
   { to: "/registros", label: "Registros de ponto", icon: AlarmClock, adminOnly: true },
   { to: "/feriados", label: "Feriados", icon: CalendarDays, adminOnly: true },

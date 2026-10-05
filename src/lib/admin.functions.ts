@@ -18,6 +18,7 @@ const createSchema = z.object({
   employee_code: z.string().trim().max(40).nullable(),
   department: z.string().trim().max(80).nullable(),
   is_admin: z.boolean(),
+  manager_admin_id: z.string().uuid().nullable(),
   schedules: z.array(scheduleSchema).max(7),
 });
 
@@ -93,6 +94,7 @@ export const createEmployee = createServerFn({ method: "POST" })
       email: data.email,
       employee_code: data.employee_code,
       department: data.department,
+      manager_admin_id: data.manager_admin_id,
       active: true,
     });
     if (profileError) {

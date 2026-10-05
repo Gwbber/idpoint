@@ -320,6 +320,89 @@ export type Database = {
         }
         Relationships: []
       }
+      point_adjustment_requests: {
+        Row: {
+          assigned_admin_id: string
+          company_id: string
+          created_at: string
+          employee_id: string
+          id: string
+          requested_clock_in: string | null
+          requested_clock_out: string | null
+          requested_lunch_end: string | null
+          requested_lunch_start: string | null
+          review_notes: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          updated_at: string
+          work_date: string
+        }
+        Insert: {
+          assigned_admin_id: string
+          company_id?: string
+          created_at?: string
+          employee_id: string
+          id?: string
+          requested_clock_in?: string | null
+          requested_clock_out?: string | null
+          requested_lunch_end?: string | null
+          requested_lunch_start?: string | null
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          updated_at?: string
+          work_date: string
+        }
+        Update: {
+          assigned_admin_id?: string
+          company_id?: string
+          created_at?: string
+          employee_id?: string
+          id?: string
+          requested_clock_in?: string | null
+          requested_clock_out?: string | null
+          requested_lunch_end?: string | null
+          requested_lunch_start?: string | null
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          updated_at?: string
+          work_date?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "point_adjustment_requests_assigned_admin_id_fkey"
+            columns: ["assigned_admin_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "point_adjustment_requests_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "point_adjustment_requests_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "point_adjustment_requests_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           active: boolean
@@ -330,6 +413,7 @@ export type Database = {
           employee_code: string | null
           full_name: string
           id: string
+          manager_admin_id: string | null
           updated_at: string
         }
         Insert: {
@@ -341,6 +425,7 @@ export type Database = {
           employee_code?: string | null
           full_name?: string
           id: string
+          manager_admin_id?: string | null
           updated_at?: string
         }
         Update: {
@@ -352,6 +437,7 @@ export type Database = {
           employee_code?: string | null
           full_name?: string
           id?: string
+          manager_admin_id?: string | null
           updated_at?: string
         }
         Relationships: [
@@ -360,6 +446,13 @@ export type Database = {
             columns: ["company_id"]
             isOneToOne: false
             referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "profiles_manager_admin_id_fkey"
+            columns: ["manager_admin_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -604,7 +697,25 @@ export type Database = {
     }
     Functions: {
       company_is_active: { Args: { _company_id: string }; Returns: boolean }
+      complete_point_adjustment: {
+        Args: {
+          _clock_in: string
+          _clock_out: string
+          _lunch_end: string
+          _lunch_start: string
+          _request_id: string
+          _review_notes?: string
+        }
+        Returns: string
+      }
       current_company_id: { Args: never; Returns: string }
+      get_my_responsible_admin: {
+        Args: never
+        Returns: {
+          full_name: string
+          id: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -614,6 +725,10 @@ export type Database = {
       }
       is_active_employee: { Args: never; Returns: boolean }
       is_admin: { Args: never; Returns: boolean }
+      reject_point_adjustment: {
+        Args: { _request_id: string; _review_notes: string }
+        Returns: undefined
+      }
     }
     Enums: {
       app_role: "admin" | "employee"

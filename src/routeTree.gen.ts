@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as PlanosRouteImport } from './routes/planos'
 import { Route as PrimeiroAcessoRouteImport } from './routes/primeiro-acesso'
 import { Route as RedefinirSenhaRouteImport } from './routes/redefinir-senha'
+import { Route as AuthenticatedAjustesRouteImport } from './routes/_authenticated/ajustes'
 import { Route as AuthenticatedAssinaturasRouteImport } from './routes/_authenticated/assinaturas'
 import { Route as AuthenticatedAuditoriaRouteImport } from './routes/_authenticated/auditoria'
 import { Route as AuthenticatedConfiguracoesRouteImport } from './routes/_authenticated/configuracoes'
@@ -58,6 +59,11 @@ const RedefinirSenhaRoute = RedefinirSenhaRouteImport.update({
   id: '/redefinir-senha',
   path: '/redefinir-senha',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAjustesRoute = AuthenticatedAjustesRouteImport.update({
+  id: '/ajustes',
+  path: '/ajustes',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedAssinaturasRoute =
   AuthenticatedAssinaturasRouteImport.update({
@@ -141,6 +147,7 @@ export interface FileRoutesByFullPath {
   '/planos': typeof PlanosRoute
   '/primeiro-acesso': typeof PrimeiroAcessoRoute
   '/redefinir-senha': typeof RedefinirSenhaRoute
+  '/ajustes': typeof AuthenticatedAjustesRoute
   '/assinaturas': typeof AuthenticatedAssinaturasRoute
   '/auditoria': typeof AuthenticatedAuditoriaRoute
   '/configuracoes': typeof AuthenticatedConfiguracoesRoute
@@ -162,6 +169,7 @@ export interface FileRoutesByTo {
   '/planos': typeof PlanosRoute
   '/primeiro-acesso': typeof PrimeiroAcessoRoute
   '/redefinir-senha': typeof RedefinirSenhaRoute
+  '/ajustes': typeof AuthenticatedAjustesRoute
   '/assinaturas': typeof AuthenticatedAssinaturasRoute
   '/auditoria': typeof AuthenticatedAuditoriaRoute
   '/configuracoes': typeof AuthenticatedConfiguracoesRoute
@@ -185,6 +193,7 @@ export interface FileRoutesById {
   '/planos': typeof PlanosRoute
   '/primeiro-acesso': typeof PrimeiroAcessoRoute
   '/redefinir-senha': typeof RedefinirSenhaRoute
+  '/_authenticated/ajustes': typeof AuthenticatedAjustesRoute
   '/_authenticated/assinaturas': typeof AuthenticatedAssinaturasRoute
   '/_authenticated/auditoria': typeof AuthenticatedAuditoriaRoute
   '/_authenticated/configuracoes': typeof AuthenticatedConfiguracoesRoute
@@ -208,6 +217,7 @@ export interface FileRouteTypes {
     | '/planos'
     | '/primeiro-acesso'
     | '/redefinir-senha'
+    | '/ajustes'
     | '/assinaturas'
     | '/auditoria'
     | '/configuracoes'
@@ -229,6 +239,7 @@ export interface FileRouteTypes {
     | '/planos'
     | '/primeiro-acesso'
     | '/redefinir-senha'
+    | '/ajustes'
     | '/assinaturas'
     | '/auditoria'
     | '/configuracoes'
@@ -251,6 +262,7 @@ export interface FileRouteTypes {
     | '/planos'
     | '/primeiro-acesso'
     | '/redefinir-senha'
+    | '/_authenticated/ajustes'
     | '/_authenticated/assinaturas'
     | '/_authenticated/auditoria'
     | '/_authenticated/configuracoes'
@@ -322,6 +334,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/redefinir-senha'
       preLoaderRoute: typeof RedefinirSenhaRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/ajustes': {
+      id: '/_authenticated/ajustes'
+      path: '/ajustes'
+      fullPath: '/ajustes'
+      preLoaderRoute: typeof AuthenticatedAjustesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/assinaturas': {
       id: '/_authenticated/assinaturas'
@@ -425,6 +444,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAjustesRoute: typeof AuthenticatedAjustesRoute
   AuthenticatedAssinaturasRoute: typeof AuthenticatedAssinaturasRoute
   AuthenticatedAuditoriaRoute: typeof AuthenticatedAuditoriaRoute
   AuthenticatedConfiguracoesRoute: typeof AuthenticatedConfiguracoesRoute
@@ -439,6 +459,7 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAjustesRoute: AuthenticatedAjustesRoute,
   AuthenticatedAssinaturasRoute: AuthenticatedAssinaturasRoute,
   AuthenticatedAuditoriaRoute: AuthenticatedAuditoriaRoute,
   AuthenticatedConfiguracoesRoute: AuthenticatedConfiguracoesRoute,

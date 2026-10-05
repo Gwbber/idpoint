@@ -115,7 +115,7 @@ function Funcionarios() {
           data: {
             email: form.email, password: form.password, full_name: form.full_name,
             employee_code: form.employee_code || null, department: form.department || null,
-            is_admin: form.is_admin, manager_admin_id: form.manager_admin_id,
+            is_admin: form.is_admin, manager_admin_id: form.is_admin ? null : form.manager_admin_id,
             schedules: schedPayload(form.schedules),
           },
         });

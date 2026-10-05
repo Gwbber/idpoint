@@ -7,6 +7,22 @@ export type Profile = {
   employee_code: string | null;
   department: string | null;
   active: boolean;
+  manager_admin_id: string | null;
+  created_at: string;
+};
+
+export type PointAdjustmentRequest = {
+  id: string;
+  employee_id: string;
+  assigned_admin_id: string;
+  work_date: string;
+  requested_clock_in: string | null;
+  requested_lunch_start: string | null;
+  requested_lunch_end: string | null;
+  requested_clock_out: string | null;
+  status: string;
+  review_notes: string | null;
+  reviewed_at: string | null;
   created_at: string;
 };
 

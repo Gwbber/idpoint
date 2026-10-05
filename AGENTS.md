@@ -15,3 +15,4 @@
 - Provisionamento de clientes acontece em `src/lib/provisioning.server.ts`, chamado pelo webhook público de pagamentos — evita criação manual de contas na venda.
 - Novas vendas usam a integração gerenciada do Stripe com checkout incorporado; dados antigos de Cakto e Asaas são apenas históricos — mantém uma única origem ativa de cobrança.
 - Customizações exclusivas de um cliente ficam em `companies.custom_features` (JSONB) — permite ligar recursos sob medida sem afetar as demais empresas.
+- Ajustes solicitados por funcionários são concluídos atomicamente pelas funções do banco, que corrigem o ponto e registram o histórico — evita aprovação parcial ou perda de auditoria.

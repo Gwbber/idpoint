@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
@@ -41,7 +42,7 @@ const defaultScheds = (): Sched[] =>
     work_start: "08:00", lunch_start: "12:00", lunch_end: "13:00", work_end: "17:48",
   }));
 
-type FormState = { id?: string; full_name: string; email: string; password: string; employee_code: string; department: string; active: boolean; is_admin: boolean; schedules: Sched[] };
+type FormState = { id?: string; full_name: string; email: string; password: string; employee_code: string; department: string; active: boolean; is_admin: boolean; manager_admin_id: string | null; schedules: Sched[] };
 
 function Funcionarios() {
   const { user, profile } = useAuth();
@@ -67,7 +68,7 @@ function Funcionarios() {
   const refresh = () => ["employees", "roles", "schedules"].forEach((k) => qc.invalidateQueries({ queryKey: [k] }));
 
   function openNew() {
-    setForm({ full_name: "", email: "", password: "", employee_code: "", department: "", active: true, is_admin: false, schedules: defaultScheds() });
+    setForm({ full_name: "", email: "", password: "", employee_code: "", department: "", active: true, is_admin: false, manager_admin_id: user?.id ?? null, schedules: defaultScheds() });
   }
   function openEdit(p: Profile) {
     const own = (schedules.data ?? []).filter((s) => s.user_id === p.id);
@@ -75,6 +76,7 @@ function Funcionarios() {
       id: p.id, full_name: p.full_name, email: p.email, password: "",
       employee_code: p.employee_code ?? "", department: p.department ?? "",
       active: p.active, is_admin: isAdminId(p.id),
+      manager_admin_id: p.manager_admin_id,
       schedules: defaultScheds().map((d) => {
         const s = own.find((x) => x.weekday === d.weekday);
         if (!s) return { ...d, is_working: own.length ? false : d.is_working };
@@ -99,6 +101,7 @@ function Funcionarios() {
   async function save() {
     if (!form) return;
     if (form.full_name.trim().length < 2) { toast.error("Informe o nome completo."); return; }
+    if (!form.is_admin && !form.manager_admin_id) { toast.error("Selecione o administrador responsável."); return; }
     setSaving(true);
     try {
       if (!form.id) {
@@ -112,7 +115,8 @@ function Funcionarios() {
           data: {
             email: form.email, password: form.password, full_name: form.full_name,
             employee_code: form.employee_code || null, department: form.department || null,
-            is_admin: form.is_admin, schedules: schedPayload(form.schedules),
+            is_admin: form.is_admin, manager_admin_id: form.is_admin ? null : form.manager_admin_id,
+            schedules: schedPayload(form.schedules),
           },
         });
         await audit("employee_created", res.id, { name: form.full_name, email: form.email });
@@ -121,6 +125,7 @@ function Funcionarios() {
         const { error } = await supabase.from("profiles").update({
           full_name: form.full_name.trim(), employee_code: form.employee_code || null,
           department: form.department || null, active: form.active,
+          manager_admin_id: form.is_admin ? null : form.manager_admin_id,
         }).eq("id", form.id);
         if (error) throw error;
         await supabase.from("work_schedules").delete().eq("user_id", form.id);
@@ -174,6 +179,8 @@ function Funcionarios() {
   const list = (employees.data ?? []).filter((e) =>
     `${e.full_name} ${e.email} ${e.employee_code ?? ""} ${e.department ?? ""}`.toLowerCase().includes(search.toLowerCase()),
   );
+  const admins = (employees.data ?? []).filter((employee) => employee.active && isAdminId(employee.id));
+  const adminName = (id: string | null) => admins.find((admin) => admin.id === id)?.full_name ?? "Não definido";
   const setSched = (i: number, patch: Partial<Sched>) =>
     setForm((f) => f && { ...f, schedules: f.schedules.map((s, j) => (j === i ? { ...s, ...patch } : s)) });
 
@@ -197,6 +204,7 @@ function Funcionarios() {
               <TableHead>Matrícula</TableHead>
               <TableHead>Departamento</TableHead>
               <TableHead>Perfil</TableHead>
+              <TableHead>Responsável</TableHead>
               <TableHead>Situação</TableHead>
               <TableHead className="text-right">Ações</TableHead>
             </TableRow>
@@ -211,6 +219,7 @@ function Funcionarios() {
                 <TableCell>{p.employee_code ?? "—"}</TableCell>
                 <TableCell>{p.department ?? "—"}</TableCell>
                 <TableCell>{isAdminId(p.id) ? <Badge>Administrador</Badge> : <Badge variant="secondary">Funcionário</Badge>}</TableCell>
+                <TableCell className="text-sm text-muted-foreground">{isAdminId(p.id) ? "—" : adminName(p.manager_admin_id)}</TableCell>
                 <TableCell>{p.active ? <Badge variant="outline" className="border-success text-success">Ativo</Badge> : <Badge variant="outline">Inativo</Badge>}</TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-1">
@@ -222,7 +231,7 @@ function Funcionarios() {
               </TableRow>
             ))}
             {list.length === 0 && (
-              <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground">Nenhum funcionário encontrado.</TableCell></TableRow>
+              <TableRow><TableCell colSpan={7} className="text-center text-muted-foreground">Nenhum funcionário encontrado.</TableCell></TableRow>
             )}
           </TableBody>
         </Table>
@@ -261,6 +270,18 @@ function Funcionarios() {
                 <label className="flex items-center gap-2 text-sm"><Switch checked={form.is_admin} onCheckedChange={(v) => setForm({ ...form, is_admin: v })} />Administrador</label>
                 {form.id && <label className="flex items-center gap-2 text-sm"><Switch checked={form.active} onCheckedChange={(v) => setForm({ ...form, active: v })} />Ativo</label>}
               </div>
+              {!form.is_admin && (
+                <div className="space-y-1.5">
+                  <Label>Administrador responsável</Label>
+                  <Select value={form.manager_admin_id ?? ""} onValueChange={(value) => setForm({ ...form, manager_admin_id: value })}>
+                    <SelectTrigger><SelectValue placeholder="Selecione o responsável" /></SelectTrigger>
+                    <SelectContent>
+                      {admins.map((admin) => <SelectItem key={admin.id} value={admin.id}>{admin.full_name}</SelectItem>)}
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-muted-foreground">Este administrador receberá os pedidos de ajuste do funcionário.</p>
+                </div>
+              )}
               <div>
                 <p className="mb-2 text-sm font-semibold">Jornada semanal</p>
                 <div className="space-y-2">

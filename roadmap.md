@@ -10,4 +10,4 @@
 - [x] Definir administrador responsável por funcionário
 - [x] Criar solicitações de ajuste de ponto para funcionários
 - [x] Permitir revisão, correção e conclusão pelo administrador responsável
-- [ ] Corrigir e validar envio de solicitações sem ampliar acesso aos cadastros dos administradores
+- [x] Corrigir e validar envio de solicitações sem ampliar acesso aos cadastros dos administradores

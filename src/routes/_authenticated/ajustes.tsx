@@ -111,8 +111,12 @@ function AjustesPage() {
       toast.success("Solicitação enviada ao administrador responsável.");
       await queryClient.invalidateQueries({ queryKey: ["point-adjustment-requests"] });
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Não foi possível enviar a solicitação.";
-      toast.error(message.includes("duplicate") ? "Já existe uma solicitação pendente para esta data." : message);
+      const message = error instanceof Error ? error.message :
+        typeof error === "object" && error !== null && "message" in error && typeof error.message === "string"
+          ? error.message : "Não foi possível enviar a solicitação.";
+      console.error("Falha ao enviar solicitação de ajuste:", error);
+      toast.error(message.includes("duplicate") ? "Já existe uma solicitação pendente para esta data." :
+        message.includes("row-level security") ? "Não foi possível enviar: confira o responsável e se o mês está aberto." : message);
     } finally { setSaving(false); }
   }
 

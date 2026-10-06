@@ -696,6 +696,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_submit_point_adjustment: {
+        Args: { _admin_id: string; _work_date: string }
+        Returns: boolean
+      }
       company_is_active: { Args: { _company_id: string }; Returns: boolean }
       complete_point_adjustment: {
         Args: {

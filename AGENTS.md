@@ -17,3 +17,4 @@
 - Customizações exclusivas de um cliente ficam em `companies.custom_features` (JSONB) — permite ligar recursos sob medida sem afetar as demais empresas.
 - Ajustes solicitados por funcionários são concluídos atomicamente pelas funções do banco, que corrigem o ponto e registram o histórico — evita aprovação parcial ou perda de auditoria.
 - Validate adjustment submission eligibility through a private security-definer policy helper tied to auth.uid(); employee RLS hides administrator profiles and roles, so direct policy joins cannot authorize valid requests.
+- Keep privileged authorization helpers in the private schema; public RPC compatibility wrappers must be security-invoker and restrict parameterized checks to the caller or trusted server roles, preventing cross-tenant metadata probes.

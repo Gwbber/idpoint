@@ -11,3 +11,4 @@
 - [x] Criar solicitações de ajuste de ponto para funcionários
 - [x] Permitir revisão, correção e conclusão pelo administrador responsável
 - [x] Corrigir e validar envio de solicitações sem ampliar acesso aos cadastros dos administradores
+- [x] Revisar os cinco alertas e limitar verificações públicas de cargo e empresa

@@ -12,4 +12,4 @@
 - [x] Permitir revisão, correção e conclusão pelo administrador responsável
 - [x] Corrigir e validar envio de solicitações sem ampliar acesso aos cadastros dos administradores
 - [x] Revisar os cinco alertas e limitar verificações públicas de cargo e empresa
-- [ ] Atualizar os pontos de novembro da Expedição FleetCO, incluindo os feriados de 02/11 e 20/11 com extras a 100%
+- [x] Atualizar os pontos de novembro da Expedição FleetCO, incluindo os feriados de 02/11 e 20/11 com extras a 100%
